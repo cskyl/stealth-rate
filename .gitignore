@@ -1,0 +1,11 @@
+node_modules/
+frontend/dist/
+frontend/.vite/
+local/
+exports/
+studies/*/private/
+*.pyc
+__pycache__/
+.DS_Store
+site/
+*.log

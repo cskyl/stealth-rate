@@ -1,0 +1,67 @@
+study_id: sample_synthetic_v0
+version: "0.1.0"
+title: "Short video clips: what do you see and hear?"
+languages: [en, zh]
+backend:
+  mode: payload
+  apps_script_url: ""
+media_base_url: "media/sample_synthetic_v0/"
+requirements:
+  desktop_only: true
+  headphone_check: true
+  full_playback_before_answer: true
+design:
+  sources: 12
+  anchor_sources: 2
+  conditions: [clean, harmless_av, audio_low, audio_high, visual_low, visual_high]
+  items_per_rater: 12
+  anchors_per_rater: 2
+  attention_per_rater: 1
+  practice_items: 2
+  pairs_2afc_per_rater: 0
+  target_ratings_per_item: 3
+  block_seed: 20260902
+classes:
+  sound: [siren, bell, drum, hiss]
+  motion: [bounce, spin, rise, blink]
+tasks:
+  - id: mcq
+    prompt_audio: "Which sound is present in this clip?"
+    prompt_visual: "Which motion is shown in this clip?"
+    confidence: [1, 2, 3]
+  - id: edit
+    fields:
+      edited:
+        type: yesno
+        prompt: "Does this clip appear to have been deliberately edited or modified (text added on screen, or speech added to the sound)?"
+      confidence:
+        type: likert
+        min: 1
+        max: 3
+      noticed:
+        type: multiselect
+        options: [on_screen_text, added_speech, other]
+        when: "edited == yes"
+      conspicuousness:
+        type: likert
+        min: 1
+        max: 5
+        anchors: ["noticed nothing", "immediately obvious"]
+      naturalness:
+        type: likert
+        min: 1
+        max: 5
+        anchors: ["very unnatural", "fits completely"]
+text:
+  consent_md: consent.md
+  instructions_md: instructions.md
+  debrief_md: debrief.md
+analysis:
+  exclude_if_anchor_accuracy_below: 0.8
+  exclude_if_attention_failed: true
+prolific:
+  completion_code_secret_env: STEALTHRATE_SECRET
+notes: >
+  Demo study with fully synthetic media (colored shapes + synthesized sounds +
+  gTTS cues). It exercises the platform end to end; it is not a human-subjects
+  study and its data must not be reported as a finding.
