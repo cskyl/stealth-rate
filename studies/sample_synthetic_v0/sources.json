@@ -1,0 +1,86 @@
+[
+  {
+    "source_id": "src_00",
+    "sound_class": "siren",
+    "motion_class": "bounce",
+    "role": "test"
+  },
+  {
+    "source_id": "src_01",
+    "sound_class": "bell",
+    "motion_class": "spin",
+    "role": "test"
+  },
+  {
+    "source_id": "src_02",
+    "sound_class": "drum",
+    "motion_class": "rise",
+    "role": "test"
+  },
+  {
+    "source_id": "src_03",
+    "sound_class": "hiss",
+    "motion_class": "blink",
+    "role": "test"
+  },
+  {
+    "source_id": "src_04",
+    "sound_class": "siren",
+    "motion_class": "bounce",
+    "role": "test"
+  },
+  {
+    "source_id": "src_05",
+    "sound_class": "bell",
+    "motion_class": "spin",
+    "role": "test"
+  },
+  {
+    "source_id": "src_06",
+    "sound_class": "drum",
+    "motion_class": "rise",
+    "role": "test"
+  },
+  {
+    "source_id": "src_07",
+    "sound_class": "hiss",
+    "motion_class": "blink",
+    "role": "test"
+  },
+  {
+    "source_id": "src_08",
+    "sound_class": "siren",
+    "motion_class": "bounce",
+    "role": "test"
+  },
+  {
+    "source_id": "src_09",
+    "sound_class": "bell",
+    "motion_class": "spin",
+    "role": "test"
+  },
+  {
+    "source_id": "src_10",
+    "sound_class": "drum",
+    "motion_class": "rise",
+    "role": "test"
+  },
+  {
+    "source_id": "src_11",
+    "sound_class": "hiss",
+    "motion_class": "blink",
+    "role": "test"
+  },
+  {
+    "source_id": "anchor_00",
+    "sound_class": "siren",
+    "motion_class": "bounce",
+    "role": "anchor"
+  },
+  {
+    "source_id": "anchor_01",
+    "sound_class": "bell",
+    "motion_class": "spin",
+    "role": "anchor"
+  }
+]

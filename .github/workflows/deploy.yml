@@ -37,7 +37,7 @@ jobs:
           for d in studies/*/; do
             s=$(basename "$d")
             mkdir -p "site/studies/$s"
-            for f in items.json blocks.json study.yaml consent.md instructions.md debrief.md; do
+            for f in items.json blocks.json study.json study.yaml consent.md instructions.md debrief.md; do
               [ -f "$d/$f" ] && cp "$d/$f" "site/studies/$s/" || true
             done
           done

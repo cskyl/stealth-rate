@@ -1,0 +1,1127 @@
+{
+  "study_id": "sample_synthetic_v0",
+  "version": "0.1.0",
+  "total_bytes": 5395880,
+  "total_mb": 5.145912170410156,
+  "encoder_args": {
+    "resolution": "854x480",
+    "fps": 25,
+    "video": "libx264 CRF 26",
+    "audio": "AAC 96 kbps mono 16 kHz",
+    "loudnorm": "two-pass I=-16 TP=-1.5 LRA=11"
+  },
+  "tts_cues": {
+    "The answer is bounce": "gtts",
+    "The answer is siren": "gtts",
+    "The answer is bell": "gtts",
+    "have a nice day": "gtts"
+  },
+  "files": {
+    "it_010784b2": {
+      "sha256": "a4295bf3096672a1f757689a0e45687fb2cd6bb872da52e719483255e130efc0",
+      "bytes": 99927,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_017fbe6c": {
+      "sha256": "3504cd7e45ec77bb581e6e065e832b93cd463e1913fa52a2006f04fb1d53fbba",
+      "bytes": 67972,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_06dc7dec": {
+      "sha256": "9262336ea3af5d32247dfa0f71b9e30dd1eff8eeda9c0f23cf2343f2946afe7a",
+      "bytes": 52520,
+      "duration_s": 8.0,
+      "integrated_loudness": "-17.25",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_0cb41a43": {
+      "sha256": "7a752c466313af242f8babda3a93b1a5a01246b28bce5a9686e1ef260f2cff9f",
+      "bytes": 104847,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "11210"
+      },
+      "tts_backend": null
+    },
+    "it_0fe5a3ce": {
+      "sha256": "0607faeae75cf960089059e4164f3ecaab563690a584f294284bf9a8416383d2",
+      "bytes": 72665,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.96",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_112cadf7": {
+      "sha256": "d2265d039f967b3ef3546c99223f0d3677b97449a5865ba6f907f52902e2d7b2",
+      "bytes": 67998,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_13819073": {
+      "sha256": "6ce4de9a8261298eaf4d49ca9ed97461845d7d5f8315cbeb2e1e603822530e0c",
+      "bytes": 65048,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": null
+    },
+    "it_15716bd8": {
+      "sha256": "5d76ca3a4f175ba83fac0287ad0607c8c51839863e6594c7b1d21d720ea30909",
+      "bytes": 66614,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7332"
+      },
+      "tts_backend": null
+    },
+    "it_1bdd5557": {
+      "sha256": "9351abd7602be754ddacd4dbea5c87d830165f4ac418cffaa92aee6e9c95047b",
+      "bytes": 65695,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6413"
+      },
+      "tts_backend": null
+    },
+    "it_1d2c0ffd": {
+      "sha256": "cafa52fe783fb8bc22c1306b2caf53b17ba1a0eb89c3d9cd2517b041340ce794",
+      "bytes": 65572,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_21c93f99": {
+      "sha256": "7c0ec163d83aca5d6531822c822b74ab3b5d728be19b8f49a9516b313903cc6e",
+      "bytes": 73825,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.68",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_271a607d": {
+      "sha256": "9262336ea3af5d32247dfa0f71b9e30dd1eff8eeda9c0f23cf2343f2946afe7a",
+      "bytes": 52520,
+      "duration_s": 8.0,
+      "integrated_loudness": "-17.25",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_29f5f74e": {
+      "sha256": "2e10e6682e9b84ca709b91ac3f9e0766578da9a777caee86f419874f3229a139",
+      "bytes": 28096,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": null
+    },
+    "it_2bc2d1a1": {
+      "sha256": "0607faeae75cf960089059e4164f3ecaab563690a584f294284bf9a8416383d2",
+      "bytes": 72665,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.96",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_2f7b1333": {
+      "sha256": "7c0ec163d83aca5d6531822c822b74ab3b5d728be19b8f49a9516b313903cc6e",
+      "bytes": 73825,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.68",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_327ebcf7": {
+      "sha256": "5d76ca3a4f175ba83fac0287ad0607c8c51839863e6594c7b1d21d720ea30909",
+      "bytes": 66614,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7332"
+      },
+      "tts_backend": null
+    },
+    "it_3373e02c": {
+      "sha256": "2e10e6682e9b84ca709b91ac3f9e0766578da9a777caee86f419874f3229a139",
+      "bytes": 28096,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": null
+    },
+    "it_338e7007": {
+      "sha256": "2adbc4acaff23ad5b7e4ba83a736058ddaf6e458196c59856c332c70ee976009",
+      "bytes": 29174,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6725"
+      },
+      "tts_backend": null
+    },
+    "it_35d35d15": {
+      "sha256": "b0a3f883c8a3f7f399906e5024293f74cbc9887cdcfa5ceb35cbdd13ea6d8a98",
+      "bytes": 66053,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": null
+    },
+    "it_367b3617": {
+      "sha256": "b0a3f883c8a3f7f399906e5024293f74cbc9887cdcfa5ceb35cbdd13ea6d8a98",
+      "bytes": 66053,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": null
+    },
+    "it_3aef5280": {
+      "sha256": "6ce4de9a8261298eaf4d49ca9ed97461845d7d5f8315cbeb2e1e603822530e0c",
+      "bytes": 65048,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": null
+    },
+    "it_3dca4b19": {
+      "sha256": "22bf345e647e5c7497d6b1af38dcc870c3c5ec5226fc19b3ed90c3184a45698d",
+      "bytes": 28787,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6326"
+      },
+      "tts_backend": null
+    },
+    "it_42bcc25c": {
+      "sha256": "9351abd7602be754ddacd4dbea5c87d830165f4ac418cffaa92aee6e9c95047b",
+      "bytes": 65695,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6413"
+      },
+      "tts_backend": null
+    },
+    "it_4318def2": {
+      "sha256": "4fa87e8dbe1fd2080b111263a7b3c6ec771c1f2586186e493e016ccaf19cb8f5",
+      "bytes": 39579,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.49",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7032"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_4866986e": {
+      "sha256": "7c0ec163d83aca5d6531822c822b74ab3b5d728be19b8f49a9516b313903cc6e",
+      "bytes": 73825,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.68",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_5175550a": {
+      "sha256": "2e10e6682e9b84ca709b91ac3f9e0766578da9a777caee86f419874f3229a139",
+      "bytes": 28096,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": null
+    },
+    "it_53367463": {
+      "sha256": "c24ce31baa631f988bee353dc9fe2537db24929d6e782f307a4ca96b4a37d052",
+      "bytes": 69168,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7148"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_53f20d5f": {
+      "sha256": "2adbc4acaff23ad5b7e4ba83a736058ddaf6e458196c59856c332c70ee976009",
+      "bytes": 29174,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6725"
+      },
+      "tts_backend": null
+    },
+    "it_591879d6": {
+      "sha256": "2f67ece2e4e29ffe43d133028fcd73f83ed180406ae38532ff1e2a69a30c3806",
+      "bytes": 52494,
+      "duration_s": 8.0,
+      "integrated_loudness": "-17.25",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_62fd9126": {
+      "sha256": "b0a3f883c8a3f7f399906e5024293f74cbc9887cdcfa5ceb35cbdd13ea6d8a98",
+      "bytes": 66053,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": null
+    },
+    "it_633d9031": {
+      "sha256": "9351abd7602be754ddacd4dbea5c87d830165f4ac418cffaa92aee6e9c95047b",
+      "bytes": 65695,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6413"
+      },
+      "tts_backend": null
+    },
+    "it_68be2793": {
+      "sha256": "4592f452780e41da2e59ed9b66327467fffd1bc32c6234bba2e3c112ad046dab",
+      "bytes": 100781,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7132"
+      },
+      "tts_backend": null
+    },
+    "it_69292ebe": {
+      "sha256": "8357688116747e327126d56b2d1510843eda5eff6d58b03742b2984bc0aa225e",
+      "bytes": 39621,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.49",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7032"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_73306ae9": {
+      "sha256": "701888e78db8b0001a17303e1424abec9c377281c06cbd2b9aec4b29549b0d75",
+      "bytes": 66432,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6090"
+      },
+      "tts_backend": null
+    },
+    "it_73e3a0c2": {
+      "sha256": "a4295bf3096672a1f757689a0e45687fb2cd6bb872da52e719483255e130efc0",
+      "bytes": 99927,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_777405cd": {
+      "sha256": "9d1d9bd7c158ecb0daae64e4d6ccfa8f3e63f4f4a344d7ed32aa1544f0fd31e3",
+      "bytes": 99737,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.94",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_78206011": {
+      "sha256": "5d76ca3a4f175ba83fac0287ad0607c8c51839863e6594c7b1d21d720ea30909",
+      "bytes": 66614,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7332"
+      },
+      "tts_backend": null
+    },
+    "it_7add6236": {
+      "sha256": "22bf345e647e5c7497d6b1af38dcc870c3c5ec5226fc19b3ed90c3184a45698d",
+      "bytes": 28787,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6326"
+      },
+      "tts_backend": null
+    },
+    "it_7dcf0768": {
+      "sha256": "6ce4de9a8261298eaf4d49ca9ed97461845d7d5f8315cbeb2e1e603822530e0c",
+      "bytes": 65048,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": null
+    },
+    "it_80dcdf7f": {
+      "sha256": "9d1d9bd7c158ecb0daae64e4d6ccfa8f3e63f4f4a344d7ed32aa1544f0fd31e3",
+      "bytes": 99737,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.94",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_82e793da": {
+      "sha256": "b8c3c7d19a34611b8725ba9cc180aec082041dc3fb585213cd6eb68d147f103e",
+      "bytes": 99888,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.84",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_86930fde": {
+      "sha256": "cd9e010215a25c12ba1c666355e0b2b3a78bca4aeec078eb98474c711ff03b8d",
+      "bytes": 67058,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6716"
+      },
+      "tts_backend": null
+    },
+    "it_90927354": {
+      "sha256": "a4295bf3096672a1f757689a0e45687fb2cd6bb872da52e719483255e130efc0",
+      "bytes": 99927,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_91480af7": {
+      "sha256": "6e9cb75175a74a16480561975d9085519b6c3d69ff326116e44b507dc0efb3fb",
+      "bytes": 70532,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.80",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7091"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_95f75234": {
+      "sha256": "9c5fd0600bc04fd98a5bb43baa1d4d41c7beea6f392bd1ed54f2c5bf0c3c353a",
+      "bytes": 39055,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.77",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_9ad1a7ba": {
+      "sha256": "a121a82dba1eba2699ad13f9795f5c354fea4579bcc4c8a6dcfe57cf434523c1",
+      "bytes": 69129,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7148"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_a23bf8dc": {
+      "sha256": "b8c3c7d19a34611b8725ba9cc180aec082041dc3fb585213cd6eb68d147f103e",
+      "bytes": 99888,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.84",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_a846bec0": {
+      "sha256": "b6d9c9f1c5cc02d578fee551956148cedb746f628dba9a0d340ba43b8d9e9f1d",
+      "bytes": 68201,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_aa662f53": {
+      "sha256": "4592f452780e41da2e59ed9b66327467fffd1bc32c6234bba2e3c112ad046dab",
+      "bytes": 100781,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7132"
+      },
+      "tts_backend": null
+    },
+    "it_ab6e74e3": {
+      "sha256": "9c5fd0600bc04fd98a5bb43baa1d4d41c7beea6f392bd1ed54f2c5bf0c3c353a",
+      "bytes": 39055,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.77",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_aedc7986": {
+      "sha256": "b8c3c7d19a34611b8725ba9cc180aec082041dc3fb585213cd6eb68d147f103e",
+      "bytes": 99888,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.84",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_b08da8f4": {
+      "sha256": "7a752c466313af242f8babda3a93b1a5a01246b28bce5a9686e1ef260f2cff9f",
+      "bytes": 104847,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "11210"
+      },
+      "tts_backend": null
+    },
+    "it_b0af601b": {
+      "sha256": "cd9e010215a25c12ba1c666355e0b2b3a78bca4aeec078eb98474c711ff03b8d",
+      "bytes": 67058,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6716"
+      },
+      "tts_backend": null
+    },
+    "it_b214f20f": {
+      "sha256": "0c1a0c27bbcc6d1897ea96f448eccf2dda492e3c9716982010efe931df7a5d4e",
+      "bytes": 39686,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.49",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7032"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_bb178b46": {
+      "sha256": "0607faeae75cf960089059e4164f3ecaab563690a584f294284bf9a8416383d2",
+      "bytes": 72665,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.96",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_bba200ed": {
+      "sha256": "6310d044f07df7044f21270eda612360c208a9def875933f4d8decf974ea5c69",
+      "bytes": 70548,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.80",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7091"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_bc8e4f9e": {
+      "sha256": "6e9cb75175a74a16480561975d9085519b6c3d69ff326116e44b507dc0efb3fb",
+      "bytes": 70532,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.80",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7091"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_bd4d156e": {
+      "sha256": "b0a3f883c8a3f7f399906e5024293f74cbc9887cdcfa5ceb35cbdd13ea6d8a98",
+      "bytes": 66053,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": null
+    },
+    "it_be9d6032": {
+      "sha256": "cd9e010215a25c12ba1c666355e0b2b3a78bca4aeec078eb98474c711ff03b8d",
+      "bytes": 67058,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6716"
+      },
+      "tts_backend": null
+    },
+    "it_c56a29e9": {
+      "sha256": "b2c85e380c633eecd0e1ee6d86bc525a952b8651d7d2cc84fd483169f76d32f8",
+      "bytes": 39025,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.77",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5647"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_cae16c3c": {
+      "sha256": "7a752c466313af242f8babda3a93b1a5a01246b28bce5a9686e1ef260f2cff9f",
+      "bytes": 104847,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "11210"
+      },
+      "tts_backend": null
+    },
+    "it_ccb43aff": {
+      "sha256": "63e5aa988e1159f97ce59fafa3c3f0475f7812f8cada9a75496c7c5a08d29524",
+      "bytes": 101246,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.81",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7631"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_cea1ef1e": {
+      "sha256": "22bf345e647e5c7497d6b1af38dcc870c3c5ec5226fc19b3ed90c3184a45698d",
+      "bytes": 28787,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6326"
+      },
+      "tts_backend": null
+    },
+    "it_cfedb214": {
+      "sha256": "b6d9c9f1c5cc02d578fee551956148cedb746f628dba9a0d340ba43b8d9e9f1d",
+      "bytes": 68201,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_d3aa897c": {
+      "sha256": "9ff27d4bbf9394b284aedc1fdae4c94d3f1715363e4836c1c3a613bc1db3e8c9",
+      "bytes": 101234,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.81",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7631"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_d5e3f62f": {
+      "sha256": "701888e78db8b0001a17303e1424abec9c377281c06cbd2b9aec4b29549b0d75",
+      "bytes": 66432,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6090"
+      },
+      "tts_backend": null
+    },
+    "it_d72f21e7": {
+      "sha256": "0607faeae75cf960089059e4164f3ecaab563690a584f294284bf9a8416383d2",
+      "bytes": 72665,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.96",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_da3e7b6d": {
+      "sha256": "b6d9c9f1c5cc02d578fee551956148cedb746f628dba9a0d340ba43b8d9e9f1d",
+      "bytes": 68201,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5711"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_da591c6e": {
+      "sha256": "cafa52fe783fb8bc22c1306b2caf53b17ba1a0eb89c3d9cd2517b041340ce794",
+      "bytes": 65572,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_db042012": {
+      "sha256": "2adbc4acaff23ad5b7e4ba83a736058ddaf6e458196c59856c332c70ee976009",
+      "bytes": 29174,
+      "duration_s": 8.0,
+      "integrated_loudness": "-18.76",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6725"
+      },
+      "tts_backend": null
+    },
+    "it_db293415": {
+      "sha256": "3504cd7e45ec77bb581e6e065e832b93cd463e1913fa52a2006f04fb1d53fbba",
+      "bytes": 67972,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_dbcce6de": {
+      "sha256": "63e5aa988e1159f97ce59fafa3c3f0475f7812f8cada9a75496c7c5a08d29524",
+      "bytes": 101246,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.81",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7631"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_e15b6cef": {
+      "sha256": "6ce4de9a8261298eaf4d49ca9ed97461845d7d5f8315cbeb2e1e603822530e0c",
+      "bytes": 65048,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "5766"
+      },
+      "tts_backend": null
+    },
+    "it_e417103b": {
+      "sha256": "4592f452780e41da2e59ed9b66327467fffd1bc32c6234bba2e3c112ad046dab",
+      "bytes": 100781,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.85",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7132"
+      },
+      "tts_backend": null
+    },
+    "it_e5e3ad45": {
+      "sha256": "5d76ca3a4f175ba83fac0287ad0607c8c51839863e6594c7b1d21d720ea30909",
+      "bytes": 66614,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7332"
+      },
+      "tts_backend": null
+    },
+    "it_ebfbd690": {
+      "sha256": "cafa52fe783fb8bc22c1306b2caf53b17ba1a0eb89c3d9cd2517b041340ce794",
+      "bytes": 65572,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.01",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": null
+    },
+    "it_f160c412": {
+      "sha256": "c24ce31baa631f988bee353dc9fe2537db24929d6e782f307a4ca96b4a37d052",
+      "bytes": 69168,
+      "duration_s": 8.0,
+      "integrated_loudness": "-16.00",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "7148"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_f75d1f33": {
+      "sha256": "9d1d9bd7c158ecb0daae64e4d6ccfa8f3e63f4f4a344d7ed32aa1544f0fd31e3",
+      "bytes": 99737,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.94",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6290"
+      },
+      "tts_backend": "gtts"
+    },
+    "it_faaa67a6": {
+      "sha256": "701888e78db8b0001a17303e1424abec9c377281c06cbd2b9aec4b29549b0d75",
+      "bytes": 66432,
+      "duration_s": 8.0,
+      "integrated_loudness": "-15.99",
+      "codec": {
+        "codec_name": "h264",
+        "width": 854,
+        "height": 480,
+        "r_frame_rate": "25/1",
+        "bit_rate": "6090"
+      },
+      "tts_backend": null
+    }
+  }
+}
