@@ -30,6 +30,16 @@ async function settle() {
   await new Promise((resolve) => setTimeout(resolve, 0));
 }
 
+async function waitFor(window, selector, timeoutMs = 3000) {
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    const element = window.document.querySelector(selector);
+    if (element) return element;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  return window.document.querySelector(selector);
+}
+
 test("payload frontend flow produces blinded responses", async () => {
   const study = await readJson("../studies/sample_synthetic_v0/study.json");
   const itemData = await readJson("../studies/sample_synthetic_v0/items.json");
@@ -104,8 +114,8 @@ test("payload frontend flow produces blinded responses", async () => {
     hook.answerTrial();
     await settle();
   }
-  await settle();
-  const payload = window.document.querySelector("#payload-code")?.value;
+  const payloadControl = await waitFor(window, "#payload-code");
+  const payload = payloadControl?.value;
   assert.ok(payload, "payload control is missing");
   const bundle = JSON.parse(gunzipSync(Buffer.from(payload, "base64")).toString("utf8"));
   assert.equal(bundle.responses.filter((row) => row.task === "mcq").length, 3);
