@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import mimetypes
+import re
 import secrets
 import threading
 from datetime import datetime, timedelta, timezone
@@ -17,6 +19,41 @@ from yaml_support import load_yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
+PUBLIC_STUDY_FILES = {"study.json", "items.json", "blocks.json", "consent.md", "instructions.md", "debrief.md"}
+
+
+def valid_study(study: str) -> str:
+    if not isinstance(study, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", study):
+        raise ValueError("invalid study identifier")
+    return study
+
+
+def public_file(path: str) -> Path | None:
+    """Resolve only deployable public assets, never the repository/private data."""
+    clean = unquote(path).lstrip("/")
+    parts = clean.split("/")
+    if ".." in parts or "\\" in clean or "\x00" in clean:
+        return None
+    if clean in {"", "index.html", "frontend/dist/index.html"}:
+        base, rel = ROOT / "frontend/dist", "index.html"
+    elif clean.startswith("assets/"):
+        base, rel = ROOT / "frontend/dist", clean
+    elif clean.startswith("frontend/dist/assets/"):
+        base, rel = ROOT / "frontend/dist", clean.removeprefix("frontend/dist/")
+    elif len(parts) == 3 and parts[0] == "studies" and parts[2] in PUBLIC_STUDY_FILES:
+        if not re.fullmatch(r"[A-Za-z0-9_-]+", parts[1]):
+            return None
+        base, rel = ROOT / "studies" / parts[1], parts[2]
+    elif len(parts) >= 3 and parts[0] == "media" and re.fullmatch(r"[A-Za-z0-9_-]+", parts[1]):
+        if Path(clean).suffix.lower() not in {".mp4", ".webm", ".wav", ".mp3", ".ogg", ".png", ".jpg", ".jpeg"}:
+            return None
+        base, rel = ROOT / "media" / parts[1], "/".join(parts[2:])
+    else:
+        return None
+    target = (base / rel).resolve()
+    if not base.resolve().is_relative_to(ROOT.resolve()) or not target.is_relative_to(base.resolve()) or not target.is_file():
+        return None
+    return target
 
 
 def now_iso() -> str:
@@ -30,6 +67,9 @@ class LocalStore:
         self.lock = threading.Lock()
 
     def path(self, study: str, name: str) -> Path:
+        valid_study(study)
+        if name not in {"sessions", "responses", "events"}:
+            raise ValueError("invalid record type")
         target = self.root / study / f"{name}.jsonl"
         target.parent.mkdir(parents=True, exist_ok=True)
         return target
@@ -45,6 +85,7 @@ class LocalStore:
             handle.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
 
     def assign(self, study: str, pid_hash: str, ua_hash: str = "") -> dict:
+        valid_study(study)
         with self.lock:
             study_dir = ROOT / "studies" / study
             blocks = json.loads((study_dir / "blocks.json").read_text(encoding="utf-8"))["blocks"]
@@ -53,7 +94,8 @@ class LocalStore:
             latest = {row["session_id"]: row for row in sessions}
             if any(row.get("pid_hash") == pid_hash and row.get("status") not in {"abandoned", "screened_out"} for row in latest.values()):
                 old = next(row for row in latest.values() if row.get("pid_hash") == pid_hash)
-                return {"ok": True, "session_id": old["session_id"], "block_id": old["block_id"], "existing": True}
+                block = next(block for block in blocks if block["block_id"] == old["block_id"])
+                return {"ok": True, "session_id": old["session_id"], "block_id": old["block_id"], "items": block["items"], "existing": True}
             max_sessions = int(config.get("design", {}).get("max_sessions", 10000))
             if len(latest) >= max_sessions:
                 return {"ok": False, "error": "session cap reached"}
@@ -129,6 +171,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def _dispatch(self, payload: dict) -> None:
         op, study = payload.get("op", ""), payload.get("study", payload.get("study_id", ""))
+        valid_study(study)
         if op == "assign": result = self.store.assign(study, payload.get("pid_hash", ""), payload.get("ua_hash", ""))
         elif op == "event": result = self.store.event(study, payload)
         elif op == "response": result = self.store.response(study, payload)
@@ -137,20 +180,11 @@ class Handler(BaseHTTPRequestHandler):
         self._send(200, json.dumps(result).encode())
 
     def _static(self, path: str) -> None:
-        clean = unquote(path).lstrip("/") or "frontend/dist/index.html"
-        if clean == "api": return
-        candidates = [ROOT / clean]
-        if clean.startswith("studies/") or clean.startswith("media/"):
-            candidates.append(ROOT / clean)
-        if clean.startswith("frontend/dist/"):
-            candidates.append(ROOT / clean)
-        target = next((candidate for candidate in candidates if candidate.is_file()), None)
-        if target is None and "." not in Path(clean).name:
-            target = ROOT / "frontend/dist/index.html"
-        if target is None or not target.is_file():
+        target = public_file(path)
+        if target is None:
             self._send(404, b"not found", "text/plain")
             return
-        content_type = "text/html" if target.suffix == ".html" else "application/javascript" if target.suffix == ".js" else "video/mp4" if target.suffix == ".mp4" else "application/json" if target.suffix == ".json" else "text/plain"
+        content_type = {".js": "application/javascript", ".css": "text/css", ".json": "application/json", ".md": "text/plain"}.get(target.suffix) or mimetypes.guess_type(str(target))[0] or "application/octet-stream"
         self._send(200, target.read_bytes(), content_type)
 
     def log_message(self, format, *args):

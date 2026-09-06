@@ -7,4 +7,10 @@ fieldset { border: 1px solid #cbd5e1; border-radius: .6rem; padding: 1rem; margi
 .card { background: white; border-radius: .8rem; box-shadow: 0 2px 14px #17203318; padding: 1.3rem; margin-top: 1rem; }
 .progress { height: .55rem; background: #dbe3ec; border-radius: 9px; overflow: hidden; } .progress > div { height: 100%; background: #e76f51; transition: width .2s; }
 video { display: block; width: 100%; max-height: 480px; background: #14213d; border-radius: .5rem; } .notice { background: #fff4d6; padding: .8rem; border-radius: .5rem; }
+.example-clip { display: grid; gap: .45rem; margin: 1rem 0 1.25rem; }
+.example-clip video { max-height: 300px; }
+.demo-banner { border-left: .3rem solid #1769aa; background: #e8f1fb; padding: .7rem .9rem; }
+.media-status { margin: .6rem 0; }
+.media-status.error { background: #fee2e2; color: #991b1b; }
+.media-open { margin-right: .65rem; }
 .options { display: grid; gap: .4rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .error { color: #a21caf; }

@@ -22,6 +22,15 @@ Data contracts: `docs/STUDY_SCHEMA.md`. Implementation work orders: `WORKORDERS.
 
 ## Quick start
 
+For this existing checkout, the sample JSON/media are already present: **do not
+regenerate them just to preview the repair**. Build the frontend and launch the
+local server as below. The server does not override `study.json`'s backend:
+the included sample uses **payload mode**, so download the response bundle at
+completion; it does not automatically write ratings to server-side JSONL.
+
+Local repair status and browser evidence: [September 6 repair board](docs/REPAIR_BOARD_20260906.md).
+The public demo does not receive local edits until a separate approved deployment.
+
 ```bash
 # 1. build a study (anonymized items, Latin-square blocks, private key)
 python tools/build_study.py studies/sample_synthetic_v0/study.yaml
@@ -29,7 +38,7 @@ python tools/build_study.py studies/sample_synthetic_v0/study.yaml
 # 2. generate the synthetic sample media (ffmpeg + gTTS)
 python tools/make_sample_media.py studies/sample_synthetic_v0/study.yaml
 
-# 3. run locally (same SPA, responses -> local/<study>/*.jsonl)
+# 3. run locally (backend is selected by study.json; sample uses payload)
 cd frontend && npm ci && npm run build && cd ..
 python tools/serve_local.py --study sample_synthetic_v0 --port 8765
 # open http://127.0.0.1:8765/?study=sample_synthetic_v0
@@ -37,6 +46,18 @@ python tools/serve_local.py --study sample_synthetic_v0 --port 8765
 # 4. export + analyze
 python tools/export_and_analyze.py --study sample_synthetic_v0 --source local
 ```
+
+For downloaded sample payloads, use an isolated folder containing only the
+returned bundles (raw `.json.gz`, Base64 text, or JSON):
+
+```bash
+python tools/export_and_analyze.py --study sample_synthetic_v0 --source payload --dir /absolute/path/to/returned-bundles
+```
+
+Keep the same browser/profile to resume. Submitted answers and completed exports
+are retained in that browser's local storage; clearing site data removes them.
+Download the completed bundle and return it to the study owner. The synthetic
+demo is still not an approved participant study.
 
 `make smoke` runs steps 1–4 end to end on the sample study with a simulated rater.
 

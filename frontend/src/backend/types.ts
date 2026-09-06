@@ -77,9 +77,20 @@ export type ResponsePayload = {
   submitted_at?: string;
 };
 
+export type PayloadRestore = {
+  assignment: Assignment;
+  session: Record<string, unknown>;
+  events: EventPayload[];
+  responses: ResponsePayload[];
+  completedBundle?: string;
+};
+
 export interface BackendAdapter {
   assign(pidHash: string, uaHash: string): Promise<Assignment>;
   event(payload: EventPayload): Promise<void>;
   response(payload: ResponsePayload): Promise<void>;
   complete(sessionId: string, blockId: string): Promise<{ completion_code: string; bundle?: string }>;
+  restore?(sessionId?: string): Promise<PayloadRestore | null>;
+  getCompletedBundle?(sessionId: string): Promise<string | null>;
+  storageWarning?(): string | null;
 }

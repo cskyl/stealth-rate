@@ -20,10 +20,12 @@ import { renderLanguage } from "./screens/language";
 import { renderPractice } from "./screens/practice";
 import { actionButton, type ScreenContext } from "./screens/context";
 import { renderTrial } from "./screens/trial";
-import { attachMedia, type MediaController } from "./media";
+import { attachMedia, type MediaController, type MediaStatus } from "./media";
 import { stringsFor, translate, type Lang, type Strings } from "./i18n";
 import {
   createInitialState,
+  configureResumeScope,
+  getOrCreateParticipantKey,
   loadResume,
   saveResume,
   type FlowState,
@@ -45,9 +47,20 @@ let itemMap = new Map<string, PublicItem>();
 let blocks: Block[] = [];
 let backend: BackendAdapter;
 let media: MediaController | null = null;
+let participantKey = "";
+let startInFlight = false;
+let submitInFlight = false;
+let completionInFlight = false;
+let headphoneOrder: Array<"left" | "right"> = [];
+const draftByItem = new Map<string, Record<string, string[]>>();
 
 function t(key: string): string {
   return translate(strings, key);
+}
+
+function persistResume(): void {
+  const result = saveResume(state);
+  if (!result.ok) throw new Error(result.error ?? "Could not save progress");
 }
 
 function context(): ScreenContext {
@@ -59,6 +72,79 @@ function navigate(screen: Screen): void {
   renderScreen();
 }
 
+function captureDraft(): void {
+  if (state.screen !== "trial" || !state.assignment) return;
+  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  const itemId = state.assignment.items[state.itemIndex];
+  if (!form || !itemId) return;
+  const draft: Record<string, string[]> = {};
+  for (const [key, value] of new FormData(form).entries()) {
+    const values = draft[key] ?? [];
+    values.push(String(value));
+    draft[key] = values;
+  }
+  if (Object.keys(draft).length > 0) draftByItem.set(itemId, draft);
+}
+
+function restoreDraft(): void {
+  if (state.screen !== "trial" || !state.assignment) return;
+  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  const itemId = state.assignment.items[state.itemIndex];
+  const draft = itemId ? draftByItem.get(itemId) : undefined;
+  if (!form || !draft) return;
+  for (const [name, values] of Object.entries(draft)) {
+    for (const input of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
+      `[name="${CSS.escape(name)}"]`,
+    )) {
+      if (input instanceof HTMLInputElement && (input.type === "radio" || input.type === "checkbox")) {
+        input.checked = values.includes(input.value);
+      } else if (input instanceof HTMLSelectElement) {
+        input.value = values[0] ?? "";
+      }
+    }
+  }
+}
+
+function updatePlaybackUI(status: MediaStatus, detail?: string): void {
+  const statusBox = root.querySelector<HTMLElement>("#media-status");
+  if (statusBox) {
+    statusBox.classList.toggle("error", status === "error");
+    const labels: Record<MediaStatus, string> = {
+      loading: t("media_loading"),
+      ready: t("playback_required"),
+      playing: t("media_playing"),
+      complete: t("playback_complete"),
+      error: `${t("media_error")}${detail ? `: ${detail}` : ""}`,
+    };
+    statusBox.textContent = labels[status];
+  }
+  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  if (form) {
+    form.hidden = !state.playbackComplete;
+    for (const input of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select")) {
+      input.disabled = !state.playbackComplete;
+    }
+  }
+  const practiceNext = root.querySelector<HTMLButtonElement>("button[data-action=practice-next]");
+  if (practiceNext) practiceNext.disabled = !state.playbackComplete;
+}
+
+function attachPreviewFailureHandlers(): void {
+  for (const video of root.querySelectorAll<HTMLVideoElement>(".example-clip video")) {
+    video.addEventListener("error", () => {
+      const status = video.parentElement?.querySelector<HTMLElement>(".media-status");
+      if (status) {
+        status.classList.add("error");
+        status.textContent = `${t("media_error")}: ${t("open_clip")}`;
+      }
+    });
+    video.addEventListener("loadeddata", () => {
+      const status = video.parentElement?.querySelector<HTMLElement>(".media-status");
+      if (status) status.textContent = t("media_ready");
+    });
+  }
+}
+
 function renderHeader(): HTMLElement {
   const select = h(
     "select",
@@ -67,9 +153,10 @@ function renderHeader(): HTMLElement {
     h("option", { value: "zh" }, "中文"),
   );
   select.addEventListener("change", () => {
+    captureDraft();
     state.lang = select.value as Lang;
     strings = stringsFor(state.lang);
-    saveResume(state);
+    persistResume();
     renderScreen();
   });
   return h("header", {}, h("h1", {}, study.title), select);
@@ -112,6 +199,7 @@ function renderRoute(): HTMLElement {
 }
 
 function renderScreen(): void {
+  captureDraft();
   media?.dispose();
   media = null;
   if (state.screen === "trial" && !state.trialStarted) {
@@ -119,25 +207,29 @@ function renderScreen(): void {
   }
   const content = renderRoute();
   root.replaceChildren(renderHeader(), h("section", { className: "card" }, content));
-  if (state.screen !== "trial") return;
+  attachPreviewFailureHandlers();
+  if (state.screen !== "trial" && state.screen !== "practice") return;
   const video = root.querySelector<HTMLVideoElement>("#clip");
   const item = currentItem();
   const assignment = state.assignment;
-  if (!video || !item || !assignment) return;
+  if (!video || !item) return;
+  if (state.screen === "trial" && !assignment) return;
   media = attachMedia({
     video,
     src: `${study.media_base_url}${item.media}`,
     itemId: item.item_id,
-    sessionId: assignment.session_id,
+    sessionId: assignment?.session_id ?? "demo",
     backend,
-    onEnded: () => {
-      state.playbackComplete = true;
-      renderScreen();
+    onEnded: (verified) => {
+      if (verified) state.playbackComplete = true;
+      updatePlaybackUI(verified ? "complete" : "ready");
     },
     onReplay: (count) => {
       state.replayCount = count;
     },
+    onStatus: updatePlaybackUI,
   });
+  restoreDraft();
 }
 
 function playTone(side: "left" | "right"): void {
@@ -150,9 +242,10 @@ function playTone(side: "left" | "right"): void {
     for (let index = 0; index < data.length; index += 1) {
       const fadeIn = Math.min(1, index / 400);
       const fadeOut = Math.min(1, (data.length - index) / 3000);
-      const phase = channel === (side === "left" ? 0 : 1) ? 1 : -1;
-      data[index] = phase * fadeIn * fadeOut *
-        Math.sin(2 * Math.PI * 440 * index / audio.sampleRate);
+      const activeChannel = side === "left" ? 0 : 1;
+      data[index] = channel === activeChannel
+        ? fadeIn * fadeOut * Math.sin(2 * Math.PI * 440 * index / audio.sampleRate)
+        : 0;
     }
   }
   const source = audio.createBufferSource();
@@ -163,7 +256,8 @@ function playTone(side: "left" | "right"): void {
 }
 
 function answerHeadphone(side: "left" | "right"): void {
-  const expected = state.headphoneTrial % 2 === 0 ? "left" : "right";
+  const expected = headphoneOrder[state.headphoneTrial] ??
+    (state.headphoneTrial % 2 === 0 ? "left" : "right");
   if (side === expected) state.headphoneCorrect += 1;
   state.headphoneTrial += 1;
   if (state.headphoneTrial >= study.headphone_trials) {
@@ -178,14 +272,30 @@ function answerHeadphone(side: "left" | "right"): void {
 }
 
 async function startStudy(): Promise<void> {
-  state.assignment = await backend.assign(pidHash(), uaHash());
-  state.itemIndex = 0;
-  saveResume(state);
-  state.screen = currentItem()?.practice ? "practice" : "trial";
-  renderScreen();
+  if (startInFlight || state.assignment) return;
+  startInFlight = true;
+  try {
+    state.assignment = await backend.assign(pidHash(), uaHash());
+    state.itemIndex = 0;
+    state.playbackComplete = false;
+    state.replayCount = 0;
+    persistResume();
+    state.screen = currentItem()?.practice ? "practice" : "trial";
+    renderScreen();
+  } catch (error) {
+    const button = root.querySelector<HTMLButtonElement>("button[data-action=start]");
+    if (button) button.disabled = false;
+    const message = error instanceof Error ? error.message : String(error);
+    root.querySelector<HTMLElement>(".card")?.prepend(
+      h("p", { className: "error", role: "alert" }, `${t("error")}: ${message}`),
+    );
+  } finally {
+    startInFlight = false;
+  }
 }
 
 function pidHash(): string {
+  if (participantKey) return participantKey;
   const raw = query.get("PROLIFIC_PID") ?? query.get("SESSION_ID") ?? "local-demo";
   const value = Array.from(raw).reduce(
     (sum, char) => (sum * 31 + char.charCodeAt(0)) >>> 0,
@@ -199,16 +309,22 @@ function uaHash(): string {
 }
 
 function advancePractice(): void {
+  if (!state.playbackComplete) return;
   state.itemIndex += 1;
+  state.playbackComplete = false;
+  state.replayCount = 0;
   state.screen = currentItem()?.practice ? "practice" : "trial";
-  saveResume(state);
+  persistResume();
   renderScreen();
 }
 
 async function submitTrial(): Promise<void> {
   const form = root.querySelector<HTMLFormElement>("#trial-form");
   const assignment = state.assignment;
-  if (!form || !assignment || !form.reportValidity()) return;
+  if (submitInFlight || !state.playbackComplete || !form || !assignment || !form.reportValidity()) return;
+  submitInFlight = true;
+  const submit = form.querySelector<HTMLButtonElement>("button[type=submit]");
+  if (submit) submit.disabled = true;
   const data = new FormData(form);
   const id = assignment.items[state.itemIndex];
   const common = {
@@ -217,44 +333,76 @@ async function submitTrial(): Promise<void> {
     rt_ms: Math.round(performance.now() - state.trialStarted),
     replay_count: state.replayCount,
   };
-  await backend.response({
-    ...common,
-    task: "mcq",
-    answers: {
-      choice: data.get("choice"),
-      confidence: Number(data.get("mcq_confidence")),
-    },
-  });
-  await backend.response({
-    ...common,
-    task: "edit",
-    answers: {
-      edited: data.get("edited"),
-      noticed: data.getAll("noticed"),
-      conspicuousness: Number(data.get("conspicuousness")),
-      naturalness: Number(data.get("naturalness")),
-      confidence: Number(data.get("edit_confidence")),
-    },
-  });
-  state.itemIndex += 1;
-  state.playbackComplete = false;
-  state.replayCount = 0;
-  state.trialStarted = performance.now();
-  saveResume(state);
-  if (state.itemIndex >= assignment.items.length) {
-    state.screen = "complete";
-    renderScreen();
-    const result = await backend.complete(assignment.session_id, assignment.block_id);
-    const box = root.querySelector<HTMLElement>("#completion");
-    if (box && result.bundle) {
-      renderPayloadControls(box, result.bundle, t,
-        `data:application/gzip;base64,${result.bundle}`);
-    } else if (box) {
-      box.replaceChildren(h("p", {}, `Completion code: ${result.completion_code}`));
+  try {
+    await backend.response({
+      ...common,
+      task: "mcq",
+      answers: {
+        choice: data.get("choice"),
+        confidence: Number(data.get("mcq_confidence")),
+      },
+    });
+    await backend.response({
+      ...common,
+      task: "edit",
+      answers: {
+        edited: data.get("edited"),
+        noticed: data.getAll("noticed"),
+        conspicuousness: Number(data.get("conspicuousness")),
+        naturalness: Number(data.get("naturalness")),
+        confidence: Number(data.get("edit_confidence")),
+      },
+    });
+    draftByItem.delete(assignment.items[state.itemIndex]);
+    state.itemIndex += 1;
+    state.playbackComplete = false;
+    state.replayCount = 0;
+    state.trialStarted = performance.now();
+    persistResume();
+    if (state.itemIndex >= assignment.items.length) {
+      state.screen = "complete";
+      renderScreen();
+      await completeSession();
+    } else {
+      state.screen = currentItem()?.practice ? "practice" : "trial";
+      renderScreen();
     }
-  } else {
-    state.screen = currentItem()?.practice ? "practice" : "trial";
-    renderScreen();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (submit) submit.disabled = false;
+    const box = root.querySelector<HTMLElement>("#completion") ?? form;
+    box.prepend(h("p", { className: "error", role: "alert" }, `${t("error")}: ${message}`));
+  } finally {
+    submitInFlight = false;
+  }
+}
+
+async function completeSession(): Promise<void> {
+  const assignment = state.assignment;
+  if (!assignment || completionInFlight) return;
+  completionInFlight = true;
+  const box = root.querySelector<HTMLElement>("#completion");
+  if (box) box.replaceChildren(h("p", {}, t("completion_loading")));
+  try {
+    const result = await backend.complete(assignment.session_id, assignment.block_id);
+    const currentBox = root.querySelector<HTMLElement>("#completion");
+    if (currentBox && result.bundle) {
+      renderPayloadControls(currentBox, result.bundle, t,
+        `data:application/gzip;base64,${result.bundle}`);
+    } else if (currentBox) {
+      currentBox.replaceChildren(h("p", {}, `Completion code: ${result.completion_code}`));
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const currentBox = root.querySelector<HTMLElement>("#completion");
+    if (currentBox) {
+      currentBox.replaceChildren(
+        h("p", { className: "error", role: "alert" }, `${t("error")}: ${message}`),
+        actionButton(t("retry_completion"), "retry-completion"),
+      );
+    }
+  } finally {
+    completionInFlight = false;
   }
 }
 
@@ -264,12 +412,23 @@ function handleAction(action: string): void {
   } else if (action === "headphones") {
     state.headphoneTrial = 0;
     state.headphoneCorrect = 0;
+    headphoneOrder = Array.from({ length: study.headphone_trials }, (_, index) =>
+      index % 2 === 0 ? "left" : "right");
+    if (query.get("test") !== "1") {
+      for (let index = headphoneOrder.length - 1; index > 0; index -= 1) {
+        const swap = Math.floor(Math.random() * (index + 1));
+        [headphoneOrder[index], headphoneOrder[swap]] = [headphoneOrder[swap], headphoneOrder[index]];
+      }
+    }
     navigate("headphones");
   } else if (action === "play-tone") {
-    playTone(state.headphoneTrial % 2 === 0 ? "left" : "right");
+    playTone(headphoneOrder[state.headphoneTrial] ??
+      (state.headphoneTrial % 2 === 0 ? "left" : "right"));
   } else if (action === "headphone-left" || action === "headphone-right") {
     answerHeadphone(action.endsWith("left") ? "left" : "right");
   } else if (action === "start") {
+    const button = root.querySelector<HTMLButtonElement>("button[data-action=start]");
+    if (button) button.disabled = true;
     void startStudy();
   } else if (action === "practice-next") {
     advancePractice();
@@ -283,6 +442,8 @@ function handleAction(action: string): void {
     void navigator.clipboard?.writeText(
       root.querySelector<HTMLTextAreaElement>("#payload-code")?.value ?? "",
     );
+  } else if (action === "retry-completion") {
+    void completeSession();
   }
 }
 
@@ -318,9 +479,10 @@ function installTestHook(): void {
     setAssignmentItems: (ids: string[]) => {
       if (state.assignment) {
         state.assignment = { ...state.assignment, items: ids } as Assignment;
-        saveResume(state);
+        persistResume();
       }
     },
+    completePlayback: () => media?.completeForTest(),
     getState: () => ({ ...state }),
   };
 }
@@ -331,6 +493,7 @@ declare global {
       answerHeadphone: (side: "left" | "right") => void;
       answerTrial: () => void;
       setAssignmentItems: (ids: string[]) => void;
+      completePlayback: () => void;
       getState: () => FlowState;
     };
   }
@@ -345,6 +508,12 @@ async function init(): Promise<void> {
       fetch(`./studies/${slug}/blocks.json`).then((response) => response.json()),
     ]);
     study = studyData as StudyConfig;
+    participantKey = getOrCreateParticipantKey(study.study_id, study.version);
+    configureResumeScope({
+      studyId: study.study_id,
+      version: study.version,
+      participantKey,
+    });
     items = itemData.items as PublicItem[];
     itemMap = new Map(items.map((item) => [item.item_id, item]));
     blocks = blockData.blocks as Block[];
@@ -355,15 +524,35 @@ async function init(): Promise<void> {
         : createPayloadAdapter(study, blocks, study.items_per_rater);
     const saved = loadResume();
     if (saved?.assignment) {
-      state.assignment = saved.assignment;
+      const restored = await backend.assign(participantKey, uaHash());
+      state.assignment = restored.session_id === saved.assignment.session_id
+        ? restored
+        : saved.assignment;
       state.itemIndex = saved.itemIndex;
       state.lang = saved.lang;
       strings = stringsFor(state.lang);
-      state.screen = currentItem()?.practice ? "practice" : "trial";
+      state.screen = state.itemIndex >= state.assignment.items.length
+        ? "complete"
+        : currentItem()?.practice ? "practice" : "trial";
     }
     installEvents();
-    installTestHook();
+    // Test hooks require explicit opt-in and a loopback origin; never expose a
+    // playback bypass from a public Pages URL.
+    const loopback = ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
+    if (query.get("test") === "1" && loopback) installTestHook();
     renderScreen();
+    if (saved?.warning) {
+      root.querySelector<HTMLElement>(".card")?.prepend(
+        h("p", { className: "error", role: "alert" }, saved.warning),
+      );
+    }
+    if (state.screen === "complete" && backend.getCompletedBundle && state.assignment) {
+      const bundle = await backend.getCompletedBundle(state.assignment.session_id);
+      const box = root.querySelector<HTMLElement>("#completion");
+      if (bundle && box) {
+        renderPayloadControls(box, bundle, t, `data:application/gzip;base64,${bundle}`);
+      }
+    }
   } catch (error) {
     root.replaceChildren(h("p", { className: "error" },
       `${t("error")}: ${String(error)}`));

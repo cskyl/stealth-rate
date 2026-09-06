@@ -38,7 +38,7 @@ test("payload frontend flow produces blinded responses", async () => {
   const scriptPath = html.match(/<script[^>]+src="([^"]+)"/)?.[1];
   assert.ok(scriptPath, "built entry script is missing");
   const script = await readFile(new URL(`dist/${scriptPath.replace(/^\.\//, "")}`, root), "utf8");
-  const windowUrl = "https://example.test/stealth-rate/?study=sample_synthetic_v0";
+  const windowUrl = "http://127.0.0.1:8765/stealth-rate/?study=sample_synthetic_v0&test=1";
   const dom = new JSDOM(html, {
     url: windowUrl,
     runScripts: "outside-only",
@@ -80,13 +80,16 @@ test("payload frontend flow produces blinded responses", async () => {
   const practice = itemData.items.filter((item) => item.practice).map((item) => item.item_id);
   const trials = itemData.items.filter((item) => !item.practice).slice(0, 3).map((item) => item.item_id);
   hook.setAssignmentItems([...practice, ...trials]);
-  click(window, "button[data-action=practice-next]");
-  click(window, "button[data-action=practice-next]");
+  for (let practiceIndex = 0; practiceIndex < practice.length; practiceIndex += 1) {
+    hook.completePlayback();
+    click(window, "button[data-action=practice-next]");
+    await settle();
+  }
   await settle();
   for (let trial = 0; trial < 3; trial += 1) {
     const video = window.document.querySelector("video#clip");
     assert.ok(video, "trial video is missing");
-    video.dispatchEvent(new window.Event("ended"));
+    hook.completePlayback();
     await settle();
     hook.answerTrial();
     await settle();
