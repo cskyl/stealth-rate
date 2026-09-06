@@ -8,7 +8,7 @@ backend:
 media_base_url: "media/sample_synthetic_v0/"
 requirements:
   desktop_only: true
-  headphone_check: true
+  headphone_check: false
   full_playback_before_answer: true
 design:
   sources: 12

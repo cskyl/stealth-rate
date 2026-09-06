@@ -239,12 +239,14 @@ def run(port: int, out: Path, browser: str) -> dict[str, object]:
     # and played through the real video element below.
     base = f"http://127.0.0.1:{port}/?study={STUDY}&test=1&QA=20260906"
     items = json.loads((STUDY_DIR / "items.json").read_text(encoding="utf-8"))["items"]
+    study_config = json.loads((STUDY_DIR / "study.json").read_text(encoding="utf-8"))
+    headphone_check = bool(study_config.get("requirements", {}).get("headphone_check", False))
     practice = [row["item_id"] for row in items if row["practice"]]
     trials = [row["item_id"] for row in items if not row["practice"]][:2]
     receipt: dict[str, object] = {
         "server": {"base": base, "allowlist": "dist assets, public study json, media mp4; POST rejected", "browser": browser},
         "routing_hook": {"used": False, "purpose": "isolated HTTP blocks fixture truncated to first four assigned clips; source unchanged", "bypassed_media": False},
-        "headphone_routing": {"test_query": "test=1", "purpose": "deterministic left/right UI routing; no audio result is claimed"},
+        "headphone_routing": {"enabled": headphone_check, "test_query": "test=1", "purpose": "optional deterministic left/right UI routing; no audio result is claimed"},
         "screenshots": {},
         "playback": [],
         "console_errors": [],
@@ -263,9 +265,12 @@ def run(port: int, out: Path, browser: str) -> dict[str, object]:
         receipt["screenshots"]["language"] = screenshot(driver, out, "00_language")
         click(driver, "consent")
         click(driver, "device")
-        click(driver, "headphones")
-        for side in ("left", "right", "left", "right", "left", "right"):
-            click(driver, f"headphone-{side}")
+        if headphone_check:
+            click(driver, "headphones")
+            for side in ("left", "right", "left", "right", "left", "right"):
+                click(driver, f"headphone-{side}")
+        else:
+            assert driver.find_element(By.CSS_SELECTOR, "button[data-action='start']")
         driver.execute_script("document.querySelectorAll('details').forEach(d=>d.open=true)")
         screenshot(driver, out, "instructions_expanded")
         click(driver, "start")

@@ -80,9 +80,14 @@ test("payload frontend flow produces blinded responses", async () => {
 
   click(window, "button[data-action=consent]");
   click(window, "button[data-action=device]");
-  click(window, "button[data-action=headphones]");
-  for (let trial = 0; trial < 6; trial += 1) {
-    hook.answerHeadphone(trial % 2 === 0 ? "left" : "right");
+  if (study.requirements.headphone_check) {
+    click(window, "button[data-action=headphones]");
+    for (let trial = 0; trial < 6; trial += 1) {
+      hook.answerHeadphone(trial % 2 === 0 ? "left" : "right");
+    }
+  } else {
+    click(window, "button[data-action=instructions]");
+    assert.equal(hook.getState().screen, "instructions", "headphone check should be bypassed");
   }
   click(window, "button[data-action=start]");
   await settle();
