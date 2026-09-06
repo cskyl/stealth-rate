@@ -6,17 +6,29 @@ import { actionButton, type ScreenContext } from "./context";
 export function renderPractice(context: ScreenContext, item: PublicItem): HTMLElement {
   const mediaUrl = `${context.study.media_base_url}${item.media}`;
   const form = h("form", { id: "practice-form" });
-  const task = taskById(context.study.tasks, "mcq");
-  form.append(renderMcq(item, task, context.t));
-  form.append(h("p", { className: "notice" }, context.t("practice_feedback")
-    .replace("and use the scales honestly", "and answer the confidence question honestly")
-    .replace("再继续。", "再继续；练习不包含明显程度或自然程度评分。")));
+  const hasMcq = context.study.tasks.some((task) => task.id === "mcq");
+  if (hasMcq) {
+    form.append(renderMcq(item, taskById(context.study.tasks, "mcq"), context.t));
+  }
+  const feedback = hasMcq
+    ? context.t("practice_feedback")
+      .replace("and use the scales honestly", "and answer the confidence question honestly")
+      .replace("再继续。", "再继续；练习不包含明显程度或自然程度评分。")
+    : context.state.lang === "zh"
+      ? "练习用于熟悉播放流程。请完整观看片段并按说明继续；不显示答案，也不要求回答内容。"
+      : "Practice is for the playback procedure. Watch the full clip and continue " +
+        "as instructed; no answer is shown or requested.";
+  form.append(h("p", { className: "notice" }, feedback));
   form.append(actionButton(context.t("next"), "practice-next", !context.state.playbackComplete));
   return h(
     "div",
     {},
     h("h2", {}, context.t("practice")),
-    h("p", { className: "demo-banner" }, context.t("demo_only")),
+    h("p", { className: "demo-banner" }, context.study.presentation === "real_stealth"
+      ? (context.state.lang === "zh"
+        ? context.study.text.mode_label_zh
+        : context.study.text.mode_label_en) || context.t("real_mode_label")
+      : context.t("demo_only")),
     h("video", { id: "clip", playsInline: true, "aria-label": context.t("practice_clip") }),
     h("div", { className: "media-status notice", id: "media-status", role: "status" },
       context.state.playbackComplete ? context.t("playback_complete") : context.t("media_loading")),

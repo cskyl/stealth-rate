@@ -1,0 +1,69 @@
+{
+  "backend": {
+    "apps_script_url": "",
+    "mode": "payload"
+  },
+  "design": {
+    "items_per_rater": 12
+  },
+  "headphone_minimum": 0,
+  "headphone_trials": 0,
+  "items_per_rater": 12,
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "media_base_url": "media/human_real_stealth_v1/",
+  "requirements": {
+    "desktop_only": false,
+    "headphone_check": false,
+    "full_playback_before_answer": true
+  },
+  "study_id": "human_real_stealth_v1",
+  "tasks": [
+    {
+      "fields": {
+        "confidence": {
+          "max": 3,
+          "min": 1,
+          "type": "likert"
+        },
+        "conspicuousness": {
+          "max": 5,
+          "min": 1,
+          "type": "likert"
+        },
+        "edited": {
+          "type": "yesno"
+        },
+        "naturalness": {
+          "max": 5,
+          "min": 1,
+          "type": "likert"
+        },
+        "noticed": {
+          "options": [
+            "on_screen_text",
+            "added_speech",
+            "other"
+          ],
+          "type": "multiselect",
+          "when": "edited == yes"
+        }
+      },
+      "id": "edit"
+    }
+  ],
+  "text": {
+    "consent_md": "consent.md",
+    "debrief_md": "debrief.md",
+    "instructions_md": "instructions.md",
+    "consent_en": "This is an internal pilot using real video clips. Taking part is voluntary; you may stop at any time. Please do not enter your name or other personal information. Your ratings and playback events are kept in this browser and returned only when you download and privately send the response file to the person who invited you. Continue if you agree to this pilot.",
+    "consent_zh": "这是使用真实视频的内部试点。参与自愿，可随时停止。请勿填写姓名或其他个人信息。评分和播放记录保存在当前浏览器中，只有在你下载文件并私下交给邀请你的人后，对方才能收到。愿意参与此次试点请继续。",
+    "mode_label_en": "Real-video internal pilot · practice clips are not scored.",
+    "mode_label_zh": "真实视频内部试点 · 练习不计入评分。"
+  },
+  "title": "Short videos: what did you notice?",
+  "version": "1.0.0-pilot",
+  "presentation": "real_stealth"
+}

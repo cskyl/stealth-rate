@@ -1,0 +1,1 @@
+Thank you. This pilot studies how people perceive video modifications. Please do not discuss individual clips with other participants until they have finished. Return your downloaded response file through the private channel used by your inviter.

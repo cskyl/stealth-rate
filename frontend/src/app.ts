@@ -334,14 +334,16 @@ async function submitTrial(): Promise<void> {
     replay_count: state.replayCount,
   };
   try {
-    await backend.response({
-      ...common,
-      task: "mcq",
-      answers: {
-        choice: data.get("choice"),
-        confidence: Number(data.get("mcq_confidence")),
-      },
-    });
+    if (study.tasks.some((task) => task.id === "mcq")) {
+      await backend.response({
+        ...common,
+        task: "mcq",
+        answers: {
+          choice: data.get("choice"),
+          confidence: Number(data.get("mcq_confidence")),
+        },
+      });
+    }
     await backend.response({
       ...common,
       task: "edit",
@@ -470,9 +472,15 @@ function installTestHook(): void {
       if (!form) return;
       const choice = form.querySelector<HTMLInputElement>("input[name=choice]");
       const edited = form.querySelector<HTMLInputElement>("input[name=edited][value=no]");
-      if (choice && edited) {
-        choice.checked = true;
+      if (edited && (!study.tasks.some((task) => task.id === "mcq") || choice)) {
+        if (choice) choice.checked = true;
         edited.checked = true;
+        for (const [name, value] of [["edit_confidence", "1"], ["conspicuousness", "3"], ["naturalness", "3"]]) {
+          const input = form.querySelector<HTMLInputElement>(`input[name=${name}][value='${value}']`);
+          if (input) input.checked = true;
+        }
+        const mcqConfidence = form.querySelector<HTMLSelectElement>("select[name=mcq_confidence]");
+        if (mcqConfidence) mcqConfidence.value = "1";
         form.requestSubmit();
       }
     },
@@ -501,7 +509,7 @@ declare global {
 
 async function init(): Promise<void> {
   try {
-    const slug = query.get("study") ?? "sample_synthetic_v0";
+    const slug = query.get("study") ?? "human_real_stealth_v1";
     const [studyData, itemData, blockData] = await Promise.all([
       fetch(`./studies/${slug}/study.json`).then((response) => response.json()),
       fetch(`./studies/${slug}/items.json`).then((response) => response.json()),

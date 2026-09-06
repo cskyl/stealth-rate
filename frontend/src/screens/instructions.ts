@@ -3,6 +3,7 @@ import { renderInstructionGuide } from "../instructionContent";
 import { actionButton, type ScreenContext } from "./context";
 
 export function renderInstructions(context: ScreenContext): HTMLElement {
+  const real = context.study.presentation === "real_stealth";
   const example = [...context.itemMap.values()].find((item) => item.practice);
   const exampleUrl = example
     ? `${context.study.media_base_url}${example.media}`
@@ -11,9 +12,13 @@ export function renderInstructions(context: ScreenContext): HTMLElement {
     "div",
     {},
     h("h2", {}, context.t("instructions")),
-    renderInstructionGuide(context.t),
-    h("p", { className: "demo-banner" }, context.t("demo_only")),
-    example && exampleUrl
+    renderInstructionGuide(context.t, real),
+    h("p", { className: "demo-banner" }, real
+      ? (context.state.lang === "zh"
+        ? context.study.text.mode_label_zh
+        : context.study.text.mode_label_en) || context.t("real_mode_label")
+      : context.t("demo_only")),
+    !real && example && exampleUrl
       ? h("div", { className: "example-clip" },
         h("h3", {}, context.t("example_clip")),
         h("video", { controls: true, preload: "metadata", playsInline: true,

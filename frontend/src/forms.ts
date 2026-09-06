@@ -171,7 +171,9 @@ export function renderTrialForm(
   const form = h("form", { id: "trial-form" });
   const mcq = taskById(tasks, "mcq");
   const edit = taskById(tasks, "edit");
-  form.append(renderMcq(item, mcq, translate));
+  if (tasks.some((task) => task.id === "mcq")) {
+    form.append(renderMcq(item, mcq, translate));
+  }
   form.append(renderEdit(edit, translate));
   const fields = edit.fields ?? {};
   const refresh = () => updateConditionalFields(form, fields);

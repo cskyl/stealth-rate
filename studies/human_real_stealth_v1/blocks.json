@@ -1,0 +1,101 @@
+{
+  "study_id": "human_real_stealth_v1",
+  "version": "1.0.0-pilot",
+  "blocks": [
+    {
+      "block_id": "block_1",
+      "items": [
+        "it_2c284b63e3d0",
+        "it_f33e9dccf83d",
+        "it_d13f4e6da05d",
+        "it_28b3f2730ee9",
+        "it_d550a7ad54fa",
+        "it_bd9ee60561ac",
+        "it_a152c3068c0f",
+        "it_82eee0258edc",
+        "it_155b4721cd36",
+        "it_837be07f256c",
+        "it_29ecacf72dd4",
+        "it_ac01acb16c06",
+        "it_46872b6772f5",
+        "it_b553305b4971"
+      ]
+    },
+    {
+      "block_id": "block_2",
+      "items": [
+        "it_2c284b63e3d0",
+        "it_f33e9dccf83d",
+        "it_008413121882",
+        "it_e9ec5922c4cd",
+        "it_5d790b41ca1f",
+        "it_0be5f43e7356",
+        "it_0c7efefb5d1b",
+        "it_a12f7671f70d",
+        "it_a369fef428cb",
+        "it_fb9aa7554c30",
+        "it_470407bb76ec",
+        "it_eee5fac7bf24",
+        "it_83ecd54b4a13",
+        "it_1cd21ea18413"
+      ]
+    },
+    {
+      "block_id": "block_3",
+      "items": [
+        "it_2c284b63e3d0",
+        "it_f33e9dccf83d",
+        "it_56a21bec0bda",
+        "it_0cbfe652d977",
+        "it_d5b15ec5e204",
+        "it_1295b8076626",
+        "it_6985501dd3ea",
+        "it_e1f5b68c9042",
+        "it_7d02b2c36e82",
+        "it_e5cbb4c6e40b",
+        "it_951af8affaa8",
+        "it_818b9c0aae77",
+        "it_2d9e0dbc04c8",
+        "it_ca048e52a719"
+      ]
+    },
+    {
+      "block_id": "block_4",
+      "items": [
+        "it_2c284b63e3d0",
+        "it_f33e9dccf83d",
+        "it_3f3ad737a135",
+        "it_4a84cbeb270c",
+        "it_961757a44a05",
+        "it_fb2978758e61",
+        "it_8fcf70102b6a",
+        "it_d67804d9c579",
+        "it_2d5e9e005a08",
+        "it_65e2f6d11049",
+        "it_af1b068aafd2",
+        "it_221c810bfbc1",
+        "it_5ef7075cf83d",
+        "it_960298107e9f"
+      ]
+    },
+    {
+      "block_id": "block_5",
+      "items": [
+        "it_2c284b63e3d0",
+        "it_f33e9dccf83d",
+        "it_69d594e6dac2",
+        "it_ae2b2da2c011",
+        "it_05f20c0adadf",
+        "it_bcfdadb1a184",
+        "it_e4cafd6cca04",
+        "it_9f42720f9c16",
+        "it_716728dcaed2",
+        "it_ca0a9f0129c7",
+        "it_23c0fcfaf58e",
+        "it_6928f18f89fd",
+        "it_aa1405effc1c",
+        "it_b892be064150"
+      ]
+    }
+  ]
+}

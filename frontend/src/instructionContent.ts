@@ -2,7 +2,23 @@ import { h } from "./dom";
 
 type Translate = (key: string) => string;
 
-export function renderInstructionGuide(t: Translate): HTMLElement {
+export function renderInstructionGuide(t: Translate, real = false): HTMLElement {
+  const zh = t("yes") === "是";
+  const realCopy = zh ? {
+    lead: "这是一次真实视频内部试点。请判断你是否注意到片段中添加或修改的内容，并如实报告感受。",
+    watch: "观看：以舒适音量完整播放片段；耳机为建议而非要求。",
+    answer: "回答：选择是否注意到修改内容、注意到的形式，并完成明显程度、自然程度和信心评分。",
+    submit: "提交：检查所有选择后提交。练习和正式片段都不提供答案。",
+  } : {
+    lead: "This is an internal pilot using real videos. Report whether you noticed " +
+      "added or modified content and describe your impression honestly.",
+    watch: "Watch: play the full clip at a comfortable volume; headphones are " +
+      "recommended, not required.",
+    answer: "Answer: select whether you noticed modified content, what form you noticed, " +
+      "and rate conspicuousness, naturalness, and confidence.",
+    submit: "Submit: check every selection before submitting. No answer is provided " +
+      "for practice or rated clips.",
+  };
   const exampleThree = t("example_three_body")
     .replace(
       "use conspicuousness 3 or another honest rating",
@@ -34,11 +50,13 @@ export function renderInstructionGuide(t: Translate): HTMLElement {
   return h(
     "div",
     { className: "instruction-guide" },
-    h("p", { className: "lead" }, t("instructions_lead")),
+    h("p", { className: "lead" }, real ? realCopy.lead : t("instructions_lead")),
     h(
       "div",
       { className: "instruction-steps" },
-      ...steps.map(([number, title, body]) =>
+      ...(real ? [
+        ["1", "", realCopy.watch], ["2", "", realCopy.answer], ["3", "", realCopy.submit],
+      ] : steps).map(([number, title, body]) =>
       h("article", { className: "instruction-step" },
         h("div", { className: "step-number", "aria-hidden": true }, number),
         h("div", {}, h("h3", {}, title), h("p", {}, body)),
@@ -47,7 +65,7 @@ export function renderInstructionGuide(t: Translate): HTMLElement {
     h("details", { className: "instruction-details" },
       h("summary", {}, t("rating_guide")),
       h("div", { className: "guide-grid" },
-        h("section", {}, h("h3", {}, t("mcq_guide_title")), h("p", {}, t("mcq_guide_body"))),
+        !real ? h("section", {}, h("h3", {}, t("mcq_guide_title")), h("p", {}, t("mcq_guide_body"))) : null,
         h("section", {}, h("h3", {}, t("edited_guide_title")), h("p", {}, t("edited_guide_body"))),
         h("section", {}, h("h3", {}, t("conspicuousness_guide_title")),
           h("p", {}, t("conspicuousness_guide_body"))),

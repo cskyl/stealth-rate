@@ -13,6 +13,7 @@ export type StudyConfig = {
   study_id: string;
   version: string;
   title: string;
+  presentation?: "synthetic_demo" | "real_stealth";
   languages: string[];
   backend: {
     mode: "payload" | "apps_script" | "local";
@@ -29,7 +30,15 @@ export type StudyConfig = {
   headphone_minimum: number;
   design: { items_per_rater: number };
   tasks: TaskSpec[];
-  text: { consent_md: string; instructions_md: string; debrief_md: string };
+  text: {
+    consent_md: string;
+    instructions_md: string;
+    debrief_md: string;
+    consent_en?: string;
+    consent_zh?: string;
+    mode_label_en?: string;
+    mode_label_zh?: string;
+  };
 };
 
 export type TaskField = {

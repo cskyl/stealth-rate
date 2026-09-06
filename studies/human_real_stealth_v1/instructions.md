@@ -1,0 +1,1 @@
+Watch each full clip at a comfortable volume, then report whether you noticed added or modified content. Rate conspicuousness, naturalness and confidence independently. Headphones are recommended; there is no headphone test. Replay if needed. On completion download the response file and return it privately. Do not guess ratings when playback fails.
