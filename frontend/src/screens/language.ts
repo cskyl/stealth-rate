@@ -1,4 +1,5 @@
 import { h } from "../dom";
+import { renderInstructionGuide } from "../instructionContent";
 import { actionButton, type ScreenContext } from "./context";
 
 export function renderLanguage(context: ScreenContext): HTMLElement {
@@ -21,6 +22,10 @@ export function renderLanguage(context: ScreenContext): HTMLElement {
         h("a", { href: exampleUrl, target: "_blank", rel: "noreferrer" }, context.t("open_clip")),
       )
       : null,
+    h("details", { className: "instruction-details", id: "guide",
+      open: new URLSearchParams(window.location.search).get("guide") === "1" },
+      h("summary", {}, context.t("rating_guide")),
+      renderInstructionGuide(context.t)),
     actionButton(context.t("continue"), "consent"),
   );
 }

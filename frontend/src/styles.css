@@ -10,7 +10,19 @@ video { display: block; width: 100%; max-height: 480px; background: #14213d; bor
 .example-clip { display: grid; gap: .45rem; margin: 1rem 0 1.25rem; }
 .example-clip video { max-height: 300px; }
 .demo-banner { border-left: .3rem solid #1769aa; background: #e8f1fb; padding: .7rem .9rem; }
+.lead { font-size: 1.08rem; max-width: 68ch; }
+.instruction-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin: 1.25rem 0; }
+.instruction-step { display: flex; gap: .7rem; background: #f8fbff; border: 1px solid #dbe7f2; border-radius: .7rem; padding: .9rem; }
+.instruction-step h3, .instruction-step p { margin: 0; } .instruction-step p { margin-top: .3rem; }
+.step-number { flex: 0 0 2rem; height: 2rem; display: grid; place-items: center; border-radius: 50%; background: #1769aa; color: white; font-weight: 700; }
+.instruction-details { border-top: 1px solid #dbe3ec; padding: .8rem 0; } .instruction-details summary { cursor: pointer; font-weight: 650; }
+.guide-grid, .worked-examples { display: grid; grid-template-columns: repeat(2, 1fr); gap: .7rem; margin-top: .8rem; }
+.guide-grid section, .worked-examples article { background: #f8fafc; border-radius: .5rem; padding: .7rem; }
+.guide-grid h3, .worked-examples h3 { font-size: 1rem; margin: 0 0 .25rem; } .guide-grid p, .worked-examples p { margin: 0; }
+.rating-options { display: flex; flex-wrap: wrap; gap: .35rem .8rem; } .rating-option { margin: 0; }
+.rating-option span { white-space: nowrap; } .rating-option input { margin-right: .25rem; }
 .media-status { margin: .6rem 0; }
 .media-status.error { background: #fee2e2; color: #991b1b; }
 .media-open { margin-right: .65rem; }
 .options { display: grid; gap: .4rem; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } .error { color: #a21caf; }
+@media (max-width: 680px) { .instruction-steps, .guide-grid, .worked-examples { grid-template-columns: 1fr; } }

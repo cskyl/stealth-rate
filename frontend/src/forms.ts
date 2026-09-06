@@ -40,25 +40,24 @@ function renderYesNo(name: string, field: TaskField, translate: Translate): HTML
 function renderLikert(name: string, field: TaskField, translate: Translate): HTMLElement {
   const min = field.min ?? 1;
   const max = field.max ?? 5;
-  const input = h("input", {
-    type: "range",
-    name: name === "confidence" ? "edit_confidence" : name,
-    min,
-    max,
-    value: Math.ceil((min + max) / 2),
-    required: true,
+  const inputName = name === "confidence" ? "edit_confidence" : name;
+  const scaleEnds = field.anchors ?? [];
+  const labels = Array.from({ length: max - min + 1 }, (_, offset) => {
+    const value = min + offset;
+    const label = value === min
+      ? (scaleEnds[0] ?? translate(`${name}_${value}`))
+      : value === max
+        ? (scaleEnds[1] ?? translate(`${name}_${value}`))
+        : translate(`${name}_${value}`);
+    return h("label", { className: "rating-option" },
+      h("input", { type: "radio", name: inputName, value, required: true }),
+      h("span", {}, `${value}${label ? ` — ${label}` : ""}`),
+    );
   });
-  const scaleEnds = (field as Record<string, unknown>)[["a", "nchors"].join("")] as
-    string[] | undefined ?? [];
   return h(
-    "label",
-    {},
-    fieldLabel(field, name, translate),
-    input,
-    scaleEnds.length
-      ? h("span", { className: "range-scale" },
-        `${scaleEnds[0]} — ${scaleEnds[1] ?? ""}`)
-      : null,
+    "fieldset", {},
+    h("legend", {}, fieldLabel(field, name, translate)),
+    h("div", { className: "rating-options" }, ...labels),
   );
 }
 
@@ -137,6 +136,7 @@ export function renderMcq(
       h(
         "select",
         { name: "mcq_confidence", required: true },
+        h("option", { value: "", disabled: true, selected: true }, translate("select_one")),
         ...confidence.map((value) => h("option", { value }, value)),
       ),
     ),

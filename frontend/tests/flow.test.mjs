@@ -91,6 +91,16 @@ test("payload frontend flow produces blinded responses", async () => {
     assert.ok(video, "trial video is missing");
     hook.completePlayback();
     await settle();
+    const confidence = window.document.querySelector("select[name=mcq_confidence]");
+    assert.ok(confidence, "MCQ confidence control is missing");
+    confidence.value = "1";
+    const editConfidence = window.document.querySelector("input[name=edit_confidence][value='1']");
+    const conspicuousness = window.document.querySelector("input[name=conspicuousness][value='3']");
+    const naturalness = window.document.querySelector("input[name=naturalness][value='3']");
+    assert.ok(editConfidence && conspicuousness && naturalness, "rating controls are missing");
+    editConfidence.checked = true;
+    conspicuousness.checked = true;
+    naturalness.checked = true;
     hook.answerTrial();
     await settle();
   }

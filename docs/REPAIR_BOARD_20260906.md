@@ -7,7 +7,7 @@ User authorized fixing existing problems. Bounded software repair supporting a s
 | UI-REPAIR | Luna high | frontend/src/app.ts, media.ts, screens/*.ts, forms.ts, i18n/*, styles.css, tests/flow.test.mjs | Visible video in practice/trial, genuine playback unlock, clear media errors, no destructive rerenders, dependable start/complete flow | INTEGRATED; browser acceptance below |
 | SAVE-REPAIR | Luna medium | frontend/src/state.ts, backend/payload.ts, backend/types.ts; new persistence tests; tools/export_and_analyze.py and new export tests | Scoped durable payload storage, format-compatible import, refresh/completed-session recovery API, no data wiping | ACCEPTED; runtime tests passed |
 | BROWSER-QA | Luna high, final harness corrections/main integration | tools/browser_smoke*, docs/qa_20260906/* and isolated QA environment/staging | Actual Firefox/Chromium playback and download proof from isolated localhost, no prod writes or private data | ACCEPTED on Chrome; Firefox limitation below |
-| Integration | main | README/docs/build artifacts and cross-file fixes after ownership release | Review diffs, run tests/build/browser smoke, release handoff; distinguish local repair from public version | LOCAL COMPLETE; publication awaiting approval |
+| Integration | main | README/docs/build artifacts and cross-file fixes after ownership release | Review diffs, run tests/build/browser smoke, release handoff; distinguish local repair from public version | PUBLISHED with user approval |
 
 Budget: three workers, one implementation pass + bounded repair; main retains safety and final acceptance. No recursive workers. No calls to real collection endpoints; no make smoke/reset or regenerate source stimuli. Browser tool installation, if needed, only under isolated project QA directory, not shared environments. Stop on repeated same blocker after two attempts and return exact evidence.
 
@@ -24,6 +24,8 @@ Budget: three workers, one implementation pass + bounded repair; main retains sa
 Main reran: frontend typecheck/lint and flow (1 pass); runtime persistence (3 passes); Python payload import (4), public assets (3), local backend (2), HTTP simulation (1), all passing. The flow test uses simulated media completion and is **not** proof of real decoding. Browser QA is recorded separately below.
 
 Release boundary: local source/build only. No git commit, push, public deployment, real participant records, or formal stimulus release. Pre-existing analyzer changes remain untouched. Request for publication approval is outstanding.
+
+**Superseding release update:** User subsequently explicitly approved commit/push. Repair commit `b8385c1` pushed to `cskyl/stealth-rate`; Pages run `34058109785` completed successfully. Main verified the live homepage loads entry `index-yvhogD_N.js` and actually plays the 854×480 practice video to completion in Chrome, with native controls and no public test hook. Source-only `study.yaml` now returns HTTP 404 from Pages. Live receipt is local `docs/qa_20260906/live_preview/receipt.json`. No original rating workbook, private study key or new research media was published; unrelated dirty analyzer edits remain untouched.
 
 ## Browser acceptance
 

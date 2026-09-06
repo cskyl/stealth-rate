@@ -8,9 +8,9 @@ export function renderPractice(context: ScreenContext, item: PublicItem): HTMLEl
   const form = h("form", { id: "practice-form" });
   const task = taskById(context.study.tasks, "mcq");
   form.append(renderMcq(item, task, context.t));
-  if (item.practice_feedback) {
-    form.append(h("p", { className: "notice" }, item.practice_feedback));
-  }
+  form.append(h("p", { className: "notice" }, context.t("practice_feedback")
+    .replace("and use the scales honestly", "and answer the confidence question honestly")
+    .replace("再继续。", "再继续；练习不包含明显程度或自然程度评分。")));
   form.append(actionButton(context.t("next"), "practice-next", !context.state.playbackComplete));
   return h(
     "div",
