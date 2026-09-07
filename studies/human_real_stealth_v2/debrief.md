@@ -1,0 +1,1 @@
+Thank you. Please keep a downloaded response backup. Only a successful synchronization confirmation means the private collector received your responses. Do not discuss individual clips until other participants finish.

@@ -20,7 +20,12 @@ video { display: block; width: 100%; max-height: 480px; background: #14213d; bor
 .guide-grid section, .worked-examples article { background: #f8fafc; border-radius: .5rem; padding: .7rem; }
 .guide-grid h3, .worked-examples h3 { font-size: 1rem; margin: 0 0 .25rem; } .guide-grid p, .worked-examples p { margin: 0; }
 .rating-options { display: flex; flex-wrap: wrap; gap: .35rem .8rem; } .rating-option { margin: 0; }
-.rating-option span { white-space: nowrap; } .rating-option input { margin-right: .25rem; }
+.rating-option span { white-space: normal; } .rating-option input { margin-right: .25rem; }
+.rating-group { border: 1px solid #dbe3ec; border-radius: .65rem; padding: .75rem 1rem; margin: .8rem 0; }
+.rating-group h3 { margin: 0 0 .45rem; font-size: 1rem; color: #254b6c; }
+textarea { display: block; box-sizing: border-box; width: 100%; margin-top: .5rem; border: 1px solid #cbd5e1; border-radius: .5rem; padding: .7rem; }
+.save-bar { display: flex; align-items: center; flex-wrap: wrap; gap: .65rem; padding: .8rem 0; font-size: .92rem; }
+.save-bar span { flex: 1 1 280px; }
 .media-status { margin: .6rem 0; }
 .media-status.error { background: #fee2e2; color: #991b1b; }
 .media-open { margin-right: .65rem; }

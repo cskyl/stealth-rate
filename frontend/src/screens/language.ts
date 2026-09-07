@@ -33,7 +33,8 @@ export function renderLanguage(context: ScreenContext): HTMLElement {
     h("details", { className: "instruction-details", id: "guide",
       open: new URLSearchParams(window.location.search).get("guide") === "1" },
       h("summary", {}, context.t("rating_guide")),
-      renderInstructionGuide(context.t, real)),
+      renderInstructionGuide(context.t, real,
+        context.study.tasks.some((task) => task.fields?.audio_clarity))),
     actionButton(context.t("continue"), "consent"),
   );
 }

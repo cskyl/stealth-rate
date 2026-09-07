@@ -1,0 +1,87 @@
+{
+  "backend": {
+    "apps_script_url": "",
+    "mode": "payload"
+  },
+  "design": {
+    "items_per_rater": 12
+  },
+  "headphone_minimum": 0,
+  "headphone_trials": 0,
+  "items_per_rater": 12,
+  "languages": [
+    "en",
+    "zh"
+  ],
+  "media_base_url": "media/human_real_stealth_v1/",
+  "requirements": {
+    "desktop_only": false,
+    "headphone_check": false,
+    "full_playback_before_answer": true
+  },
+  "study_id": "human_real_stealth_v2",
+  "tasks": [
+    {
+      "fields": {
+        "edited": {
+          "type": "yesno"
+        },
+        "noticed": {
+          "options": [
+            "on_screen_text",
+            "added_speech",
+            "other"
+          ],
+          "type": "multiselect",
+          "when": "edited == yes"
+        },
+        "audio_clarity": {
+          "type": "likert",
+          "min": 0,
+          "max": 5
+        },
+        "visual_readability": {
+          "type": "likert",
+          "min": 0,
+          "max": 5
+        },
+        "conspicuousness": {
+          "max": 5,
+          "min": 1,
+          "type": "likert"
+        },
+        "naturalness": {
+          "max": 5,
+          "min": 1,
+          "type": "likert"
+        },
+        "confidence": {
+          "max": 3,
+          "min": 1,
+          "type": "likert"
+        },
+        "comment": {
+          "type": "textarea",
+          "maxLength": 500
+        }
+      },
+      "id": "edit"
+    }
+  ],
+  "text": {
+    "consent_md": "consent.md",
+    "debrief_md": "debrief.md",
+    "instructions_md": "instructions.md",
+    "consent_en": "This is a voluntary internal pilot using real videos. You may stop at any time. Please do not enter your name or contact details. Ratings and playback events are saved in this browser. When the private study collector is connected, your pseudonymous ratings are automatically sent to the study owner; the page shows whether synchronization succeeded. A downloaded backup is also available. If collection is not connected, nothing is sent automatically. Continue if you agree.",
+    "consent_zh": "这是自愿参与的真实视频内部试点，可以随时停止。请勿填写姓名或联系方式。评分和播放记录保存在当前浏览器；接通私有收集端后，匿名编号下的评分会自动交给研究负责人，页面会说明同步是否成功。也可下载备份。未接通收集端时不会自动发送。愿意参与请继续。",
+    "mode_label_en": "Real-video internal pilot · practice ratings are not collected.",
+    "mode_label_zh": "真实视频内部试点 · 练习评分不收集。"
+  },
+  "title": "Short videos · what did you notice?",
+  "version": "2.0.0-pilot",
+  "presentation": "real_stealth",
+  "collector": {
+    "enabled": false,
+    "url": ""
+  }
+}

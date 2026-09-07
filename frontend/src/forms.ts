@@ -14,6 +14,7 @@ function fieldLabel(field: TaskField, name: string, translate: Translate): strin
   if (name === "edited") {
     return translate("edited");
   }
+  if (name === "audio_clarity" || name === "visual_readability") return translate(`${name}_title`);
   return translate(name);
 }
 
@@ -75,6 +76,19 @@ function renderMultiselect(name: string, field: TaskField, translate: Translate)
       ),
     ),
   );
+}
+
+function renderSelect(name: string, field: TaskField, translate: Translate): HTMLElement {
+  return h("label", {}, fieldLabel(field, name, translate),
+    h("select", { name, required: field.required === true },
+      h("option", { value: "", disabled: true, selected: true }, translate("select_one")),
+      ...(field.options ?? []).map((option) => h("option", { value: option }, translate(option))),
+    ));
+}
+
+function renderTextarea(name: string, field: TaskField, translate: Translate): HTMLElement {
+  return h("label", {}, fieldLabel(field, name, translate),
+    h("textarea", { name, maxLength: field.maxLength ?? 500, rows: 3 }));
 }
 
 function matchesWhen(condition: string | undefined, values: FormData): boolean {
@@ -149,14 +163,31 @@ export function renderEdit(
 ): HTMLFieldSetElement {
   const fields = task.fields ?? {};
   const children: DomChild[] = [h("legend", {}, translate("edited"))];
+  const groups: Record<string, string[]> = {
+    detection: ["edited", "noticed"],
+    clarity: ["audio_clarity", "visual_readability"],
+    context: ["conspicuousness", "naturalness", "confidence", "technical_issue", "comment"],
+  };
+  const rendered = new Set<string>();
+  const renderField = (name: string, field: TaskField): HTMLElement => {
+    if (field.type === "yesno") return renderYesNo(name, field, translate);
+    if (field.type === "likert") return renderLikert(name, field, translate);
+    if (field.type === "multiselect") return renderMultiselect(name, field, translate);
+    if (field.type === "select") return renderSelect(name, field, translate);
+    return renderTextarea(name, field, translate);
+  };
   for (const [name, field] of Object.entries(fields)) {
-    if (field.type === "yesno") {
-      children.push(renderYesNo(name, field, translate));
-    } else if (field.type === "likert") {
-      children.push(renderLikert(name, field, translate));
-    } else if (field.type === "multiselect") {
-      children.push(renderMultiselect(name, field, translate));
-    }
+    if (rendered.has(name)) continue;
+    const group = Object.entries(groups).find(([, names]) => names.includes(name))?.[0] ?? "context";
+    const names = [...new Set([name, ...groups[group]])]
+      .filter((candidate) => fields[candidate] && !rendered.has(candidate));
+    children.push(h("section", { className: "rating-group" },
+      h("h3", {}, translate(`rating_group_${group}`)),
+      ...names.map((candidate) => {
+        rendered.add(candidate);
+        return renderField(candidate, fields[candidate]);
+      }),
+    ));
   }
   return h("fieldset", {}, ...children);
 }

@@ -1,0 +1,25 @@
+/* Dedicated contract tests; production Code.gs is evaluated in a small Apps-Script-like VM. */
+const assert = require('assert');
+const fs = require('fs');
+const vm = require('vm');
+const code = fs.readFileSync(require('path').join(__dirname, '..', 'Code.gs'), 'utf8');
+const out = [];
+const ctx = { console, RECEIVER: undefined, ContentService:{MimeType:{JSON:'json'},createTextOutput:x=>({text:x,setMimeType(){return this;}})}, PropertiesService:{getScriptProperties:()=>({getProperty:(k)=>k==='STUDY_SHEET_ID'?'sheet-test':''})} };
+vm.createContext(ctx); vm.runInContext(code, ctx);
+assert.equal(ctx.doGet().text, JSON.stringify({ok:true,service:'human_real_stealth_v2',version:'2.0.0-pilot'}));
+const invite = {rated:{clip_1:true}, block:'b1'};
+const realistic = {session_id:'s1',item_id:'clip_1',task:'edit',answers:{edited:'yes',noticed:['on_screen_text','added_speech'],audio_clarity:3,visual_readability:2,conspicuousness:3,naturalness:4,confidence:2,comment:null,technical_issue:null},rt_ms:1200,replay_count:0};
+const normalized = ctx.validateResponse_(realistic, invite, 's1');
+assert.equal(JSON.stringify(normalized.noticed), JSON.stringify(['on_screen_text','added_speech']));
+assert.equal(normalized.stealth_display, 3);
+const scalarNotice = JSON.parse(JSON.stringify(realistic)); scalarNotice.answers.noticed='on_screen_text'; assert.throws(()=>ctx.validateResponse_(scalarNotice, invite, 's1'), /noticed_must_be_array/);
+assert.throws(()=>ctx.validateResponse_({session_id:'s1',item_id:'clip_1',task:'edit',answers:{},rt_ms:1,replay_count:0},invite,'s1'), /missing_answer_field/);
+const tech = {session_id:'s1',item_id:'clip_1',task:'edit',answers:{edited:null,noticed:[],audio_clarity:null,visual_readability:null,conspicuousness:null,naturalness:null,confidence:null,comment:null,technical_issue:'network failure'},rt_ms:10,replay_count:0};
+assert.equal(ctx.validateResponse_(tech, invite, 's1').technical_issue, 'network failure');
+const none = JSON.parse(JSON.stringify(realistic)); none.answers.technical_issue='none'; assert.equal(ctx.validateResponse_(none, invite, 's1').technical_issue, '');
+let bad = ctx.doPost({postData:{contents:JSON.stringify({op:'sync',study_id:'wrong',version:'2.0.0-pilot',invite_token:'0'.repeat(32),bundle:{responses:[]}})}});
+assert.match(bad.text, /WRONG_STUDY_VERSION/);
+bad = ctx.doPost({postData:{contents:'not json'}}); assert.match(bad.text, /INVALID_JSON/);
+bad = ctx.doPost({postData:{contents:JSON.stringify({op:'sync',study_id:'human_real_stealth_v2',version:'2.0.0-pilot',invite_token:'z'.repeat(32),bundle:{responses:[]}})}});
+assert.match(bad.text, /INVALID_INVITE/);
+console.log('PASS apps_script_v2 isolated contract tests');

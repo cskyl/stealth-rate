@@ -2,7 +2,7 @@ import { h } from "./dom";
 
 type Translate = (key: string) => string;
 
-export function renderInstructionGuide(t: Translate, real = false): HTMLElement {
+export function renderInstructionGuide(t: Translate, real = false, v2 = false): HTMLElement {
   const zh = t("yes") === "是";
   const realCopy = zh ? {
     lead: "这是一次真实视频内部试点。请判断你是否注意到片段中添加或修改的内容，并如实报告感受。",
@@ -67,6 +67,10 @@ export function renderInstructionGuide(t: Translate, real = false): HTMLElement 
       h("div", { className: "guide-grid" },
         !real ? h("section", {}, h("h3", {}, t("mcq_guide_title")), h("p", {}, t("mcq_guide_body"))) : null,
         h("section", {}, h("h3", {}, t("edited_guide_title")), h("p", {}, t("edited_guide_body"))),
+        v2 ? h("section", {}, h("h3", {}, t("audio_clarity_title")),
+          h("p", {}, t("audio_clarity_body"))) : null,
+        v2 ? h("section", {}, h("h3", {}, t("visual_readability_title")),
+          h("p", {}, t("visual_readability_body"))) : null,
         h("section", {}, h("h3", {}, t("conspicuousness_guide_title")),
           h("p", {}, t("conspicuousness_guide_body"))),
         h("section", {}, h("h3", {}, t("naturalness_guide_title")),
@@ -85,7 +89,13 @@ export function renderInstructionGuide(t: Translate, real = false): HTMLElement 
     ),
     h("details", { className: "instruction-details" },
       h("summary", {}, t("playback_help_title")),
-      h("p", {}, playbackHelp),
+      h("p", {}, v2 ? playbackHelp
+        .replace("No data is sent automatically.",
+          "When a private collector is connected, submitted ratings are also sent automatically. " +
+          "Only the Synced status confirms receipt; keep a downloaded backup. " +
+          "Without a connected collector, nothing is sent automatically.")
+        .replace("数据不会自动发送。", "接通私有收集端后，已提交评分也会自动发送；只有显示已同步才说明收到，请仍保留下载备份。未接通时不会自动发送。")
+        : playbackHelp),
     ),
   );
 }

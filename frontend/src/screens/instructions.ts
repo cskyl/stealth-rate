@@ -12,7 +12,7 @@ export function renderInstructions(context: ScreenContext): HTMLElement {
     "div",
     {},
     h("h2", {}, context.t("instructions")),
-    renderInstructionGuide(context.t, real),
+    renderInstructionGuide(context.t, real, context.study.tasks.some((task) => task.fields?.audio_clarity)),
     h("p", { className: "demo-banner" }, real
       ? (context.state.lang === "zh"
         ? context.study.text.mode_label_zh

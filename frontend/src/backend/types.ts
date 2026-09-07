@@ -39,16 +39,19 @@ export type StudyConfig = {
     mode_label_en?: string;
     mode_label_zh?: string;
   };
+  collector?: { url: string; enabled: boolean };
 };
 
 export type TaskField = {
-  type: "yesno" | "likert" | "multiselect";
+  type: "yesno" | "likert" | "multiselect" | "select" | "textarea";
   prompt?: string;
   min?: number;
   max?: number;
   options?: string[];
   anchors?: string[];
   when?: string;
+  maxLength?: number;
+  required?: boolean;
 };
 
 export type TaskSpec = {
@@ -102,4 +105,7 @@ export interface BackendAdapter {
   restore?(sessionId?: string): Promise<PayloadRestore | null>;
   getCompletedBundle?(sessionId: string): Promise<string | null>;
   storageWarning?(): string | null;
+  snapshot?(): Promise<string>;
+  sync?(): Promise<void>;
+  syncStatus?(): { state: string; pending: number; message?: string };
 }

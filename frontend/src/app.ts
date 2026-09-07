@@ -31,6 +31,8 @@ import {
   type FlowState,
   type Screen,
 } from "./state";
+import { parseInvitation } from "./assignment";
+import { createCollector } from "./backend/collector";
 
 const appRoot = document.querySelector<HTMLDivElement>("#app");
 if (!appRoot) {
@@ -51,11 +53,17 @@ let participantKey = "";
 let startInFlight = false;
 let submitInFlight = false;
 let completionInFlight = false;
+let saveStatusTimer: number | null = null;
+let invitationToken = "";
 let headphoneOrder: Array<"left" | "right"> = [];
 const draftByItem = new Map<string, Record<string, string[]>>();
 
 function t(key: string): string {
   return translate(strings, key);
+}
+
+function isV2(): boolean {
+  return study.tasks.some((task) => Boolean(task.fields?.audio_clarity));
 }
 
 function persistResume(): void {
@@ -74,7 +82,7 @@ function navigate(screen: Screen): void {
 
 function captureDraft(): void {
   if (state.screen !== "trial" || !state.assignment) return;
-  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  const form = root.querySelector<HTMLFormElement>("#trial-form, #practice-form");
   const itemId = state.assignment.items[state.itemIndex];
   if (!form || !itemId) return;
   const draft: Record<string, string[]> = {};
@@ -88,14 +96,15 @@ function captureDraft(): void {
 
 function restoreDraft(): void {
   if (state.screen !== "trial" || !state.assignment) return;
-  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  const form = root.querySelector<HTMLFormElement>("#trial-form, #practice-form");
   const itemId = state.assignment.items[state.itemIndex];
   const draft = itemId ? draftByItem.get(itemId) : undefined;
   if (!form || !draft) return;
   for (const [name, values] of Object.entries(draft)) {
-    for (const input of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>(
-      `[name="${CSS.escape(name)}"]`,
+    for (const input of form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+      "input, select, textarea",
     )) {
+      if (input.name !== name) continue;
       if (input instanceof HTMLInputElement && (input.type === "radio" || input.type === "checkbox")) {
         input.checked = values.includes(input.value);
       } else if (input instanceof HTMLSelectElement) {
@@ -118,10 +127,13 @@ function updatePlaybackUI(status: MediaStatus, detail?: string): void {
     };
     statusBox.textContent = labels[status];
   }
-  const form = root.querySelector<HTMLFormElement>("#trial-form");
+  const form = root.querySelector<HTMLFormElement>(isV2() ? "#trial-form, #practice-form" : "#trial-form");
   if (form) {
     form.hidden = !state.playbackComplete;
-    for (const input of form.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select")) {
+    const controls = form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+      "input, select, textarea",
+    );
+    for (const input of controls) {
       input.disabled = !state.playbackComplete;
     }
   }
@@ -160,6 +172,32 @@ function renderHeader(): HTMLElement {
     renderScreen();
   });
   return h("header", {}, h("h1", {}, study.title), select);
+}
+
+function saveStatusText(): string {
+  const zh = state.lang === "zh";
+  if (!state.assignment) return zh ? "预览中 · 尚未开始评分" : "Preview · no ratings started";
+  const status = backend?.syncStatus?.() ?? { state: "local", pending: 0 };
+  if (status.state === "local" || status.state === "disabled") {
+    return zh ? "已保存在此浏览器 · 云端未接通，请下载备份" : "Saved in this browser · cloud not connected; download a backup";
+  }
+  const label = status.state === "synced" ? t("cloud_synced")
+    : status.state === "pending" ? t("cloud_pending")
+      : status.state === "syncing" ? t("cloud_syncing") : t("browser_saved");
+  return `${label}${status.pending ? ` (${status.pending})` : ""}${status.message ? `: ${status.message}` : ""}`;
+}
+
+function renderSaveBar(): HTMLElement {
+  const bar = h("div", { className: "save-bar", id: "save-bar" },
+    h("span", { id: "save-status", role: "status" }, saveStatusText()),
+    actionButton(t("retry_sync"), "retry-sync", !state.assignment || !study.collector?.enabled || !invitationToken),
+    actionButton(t("download_partial"), "download-partial", !state.assignment));
+  if (saveStatusTimer !== null) window.clearInterval(saveStatusTimer);
+  saveStatusTimer = window.setInterval(() => {
+    const status = root.querySelector<HTMLElement>("#save-status");
+    if (status) status.textContent = saveStatusText();
+  }, 1000);
+  return bar;
 }
 
 function currentItem(): PublicItem | null {
@@ -206,7 +244,22 @@ function renderScreen(): void {
     state.trialStarted = performance.now();
   }
   const content = renderRoute();
-  root.replaceChildren(renderHeader(), h("section", { className: "card" }, content));
+  if (isV2() && state.screen === "trial") {
+    const zh = state.lang === "zh";
+    const help = h("details", { className: "instruction-details" },
+      h("summary", {}, zh ? "视频或声音播放有问题？" : "Video or sound not working?"),
+      h("p", {}, zh ? "先尝试重播或直接打开视频。仍无法播放时，选择问题并跳过；不会记成低分。"
+        : "Try replay or open the clip directly. If it still fails, " +
+          "report the problem and skip; this is not a low score."),
+      h("select", { id: "playback-problem", "aria-label": zh ? "播放问题" : "Playback problem" },
+        h("option", { value: "" }, zh ? "请选择问题" : "Choose a problem"),
+        h("option", { value: "video_problem" }, zh ? "视频无法播放" : "Video cannot play"),
+        h("option", { value: "audio_problem" }, zh ? "声音播放异常" : "Audio playback problem"),
+        h("option", { value: "other_problem" }, zh ? "其他技术问题" : "Other technical problem")),
+      actionButton(zh ? "记录问题并跳过" : "Report problem and skip", "report-problem"));
+    content.querySelector("#trial-form")?.insertAdjacentElement("beforebegin", help);
+  }
+  root.replaceChildren(renderHeader(), renderSaveBar(), h("section", { className: "card" }, content));
   attachPreviewFailureHandlers();
   if (state.screen !== "trial" && state.screen !== "practice") return;
   const video = root.querySelector<HTMLVideoElement>("#clip");
@@ -310,6 +363,7 @@ function uaHash(): string {
 
 function advancePractice(): void {
   if (!state.playbackComplete) return;
+  if (isV2() && !root.querySelector<HTMLFormElement>("#practice-form")?.reportValidity()) return;
   state.itemIndex += 1;
   state.playbackComplete = false;
   state.replayCount = 0;
@@ -318,10 +372,12 @@ function advancePractice(): void {
   renderScreen();
 }
 
-async function submitTrial(): Promise<void> {
+async function submitTrial(technicalReason?: string): Promise<void> {
   const form = root.querySelector<HTMLFormElement>("#trial-form");
   const assignment = state.assignment;
-  if (submitInFlight || !state.playbackComplete || !form || !assignment || !form.reportValidity()) return;
+  const failure = isV2() && ["video_problem", "audio_problem", "other_problem"].includes(technicalReason ?? "");
+  if (submitInFlight || !form || !assignment) return;
+  if (!failure && (!state.playbackComplete || !form.reportValidity())) return;
   submitInFlight = true;
   const submit = form.querySelector<HTMLButtonElement>("button[type=submit]");
   if (submit) submit.disabled = true;
@@ -333,6 +389,12 @@ async function submitTrial(): Promise<void> {
     rt_ms: Math.round(performance.now() - state.trialStarted),
     replay_count: state.replayCount,
   };
+  const numberOrNull = (name: string): number | null => {
+    const value = data.get(name);
+    return value === null || value === "" ? null : Number(value);
+  };
+  const technicalIssue = failure ? technicalReason! : "";
+  const hasTechnicalIssue = failure;
   try {
     if (study.tasks.some((task) => task.id === "mcq")) {
       await backend.response({
@@ -348,11 +410,15 @@ async function submitTrial(): Promise<void> {
       ...common,
       task: "edit",
       answers: {
-        edited: data.get("edited"),
-        noticed: data.getAll("noticed"),
-        conspicuousness: Number(data.get("conspicuousness")),
-        naturalness: Number(data.get("naturalness")),
-        confidence: Number(data.get("edit_confidence")),
+        edited: hasTechnicalIssue ? null : data.get("edited"),
+        noticed: hasTechnicalIssue ? [] : data.getAll("noticed"),
+        conspicuousness: hasTechnicalIssue ? null : numberOrNull("conspicuousness"),
+        naturalness: hasTechnicalIssue ? null : numberOrNull("naturalness"),
+        confidence: hasTechnicalIssue ? null : numberOrNull("edit_confidence"),
+        audio_clarity: hasTechnicalIssue ? null : numberOrNull("audio_clarity"),
+        visual_readability: hasTechnicalIssue ? null : numberOrNull("visual_readability"),
+        technical_issue: technicalIssue || null,
+        comment: data.get("comment") || null,
       },
     });
     draftByItem.delete(assignment.items[state.itemIndex]);
@@ -446,6 +512,29 @@ function handleAction(action: string): void {
     );
   } else if (action === "retry-completion") {
     void completeSession();
+  } else if (action === "retry-sync") {
+    void backend.sync?.().catch(() => undefined);
+  } else if (action === "report-problem") {
+    const problem = root.querySelector<HTMLSelectElement>("#playback-problem");
+    if (problem && !problem.value) {
+      problem.setCustomValidity(state.lang === "zh" ? "请选择播放问题" : "Choose the playback problem");
+      problem.reportValidity();
+      problem.addEventListener("change", () => problem.setCustomValidity(""), { once: true });
+    } else if (problem) void submitTrial(problem.value);
+  } else if (action === "download-partial") {
+    void backend.snapshot?.().then((bundle) => {
+      if (!bundle) return;
+      const link = document.createElement("a");
+      link.href = `data:application/gzip;base64,${bundle}`;
+      link.download = "stealthrate-partial-responses.json.gz";
+      document.body.append(link);
+      link.click();
+      link.remove();
+    }).catch(() => {
+      const status = root.querySelector("#save-status");
+      if (status) status.textContent = state.lang === "zh"
+        ? "备份未能生成，请重试" : "Backup could not be created; please retry";
+    });
   }
 }
 
@@ -509,39 +598,58 @@ declare global {
 
 async function init(): Promise<void> {
   try {
-    const slug = query.get("study") ?? "human_real_stealth_v1";
+    const slug = query.get("study") ?? "human_real_stealth_v2";
     const [studyData, itemData, blockData] = await Promise.all([
       fetch(`./studies/${slug}/study.json`).then((response) => response.json()),
       fetch(`./studies/${slug}/items.json`).then((response) => response.json()),
       fetch(`./studies/${slug}/blocks.json`).then((response) => response.json()),
     ]);
     study = studyData as StudyConfig;
-    participantKey = getOrCreateParticipantKey(study.study_id, study.version);
+    items = itemData.items as PublicItem[];
+    itemMap = new Map(items.map((item) => [item.item_id, item]));
+    blocks = blockData.blocks as Block[];
+    const invitation = location.hash ? parseInvitation(location.hash, blocks) : null;
+    invitationToken = invitation?.inviteToken ?? "";
+    participantKey = invitation?.participantKey ?? getOrCreateParticipantKey(study.study_id, study.version);
     configureResumeScope({
       studyId: study.study_id,
       version: study.version,
       participantKey,
     });
-    items = itemData.items as PublicItem[];
-    itemMap = new Map(items.map((item) => [item.item_id, item]));
-    blocks = blockData.blocks as Block[];
+    const collector = invitation && study.collector?.enabled
+      ? createCollector({
+        url: study.collector.url || undefined,
+        studyId: study.study_id,
+        version: study.version,
+        inviteToken: invitation.inviteToken,
+        participantKey,
+      })
+      : undefined;
     backend = study.backend.mode === "local"
       ? createLocalAdapter(study)
       : study.backend.mode === "apps_script"
         ? createAppsScriptAdapter(study)
-        : createPayloadAdapter(study, blocks, study.items_per_rater);
+        : createPayloadAdapter(study, blocks, study.items_per_rater, {
+          blockId: invitation?.blockId,
+          inviteToken: invitationToken || undefined,
+          participantKey,
+          practiceCount: 2,
+          collector,
+        });
     const saved = loadResume();
     if (saved?.assignment) {
       const restored = await backend.assign(participantKey, uaHash());
-      state.assignment = restored.session_id === saved.assignment.session_id
-        ? restored
-        : saved.assignment;
+      if (restored.session_id !== saved.assignment.session_id) {
+        throw new Error("Stored session mismatch; prior data was not overwritten");
+      }
+      state.assignment = restored;
       state.itemIndex = saved.itemIndex;
       state.lang = saved.lang;
       strings = stringsFor(state.lang);
       state.screen = state.itemIndex >= state.assignment.items.length
         ? "complete"
         : currentItem()?.practice ? "practice" : "trial";
+      if (study.collector?.enabled && invitationToken) void backend.sync?.().catch(() => undefined);
     }
     installEvents();
     // Test hooks require explicit opt-in and a loopback origin; never expose a

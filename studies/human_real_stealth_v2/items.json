@@ -1,0 +1,626 @@
+{
+  "study_id": "human_real_stealth_v2",
+  "version": "2.0.0-pilot",
+  "items": [
+    {
+      "item_id": "it_69d594e6dac2",
+      "media": "it_69d594e6dac2.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_960298107e9f",
+      "media": "it_960298107e9f.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_155b4721cd36",
+      "media": "it_155b4721cd36.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_a369fef428cb",
+      "media": "it_a369fef428cb.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_008413121882",
+      "media": "it_008413121882.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_af1b068aafd2",
+      "media": "it_af1b068aafd2.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_bd9ee60561ac",
+      "media": "it_bd9ee60561ac.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_0c7efefb5d1b",
+      "media": "it_0c7efefb5d1b.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_6985501dd3ea",
+      "media": "it_6985501dd3ea.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_b553305b4971",
+      "media": "it_b553305b4971.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_ac01acb16c06",
+      "media": "it_ac01acb16c06.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_bcfdadb1a184",
+      "media": "it_bcfdadb1a184.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_3f3ad737a135",
+      "media": "it_3f3ad737a135.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_9f42720f9c16",
+      "media": "it_9f42720f9c16.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_6928f18f89fd",
+      "media": "it_6928f18f89fd.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_837be07f256c",
+      "media": "it_837be07f256c.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_7d02b2c36e82",
+      "media": "it_7d02b2c36e82.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_f33e9dccf83d",
+      "media": "it_f33e9dccf83d.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": true,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_aa1405effc1c",
+      "media": "it_aa1405effc1c.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_ae2b2da2c011",
+      "media": "it_ae2b2da2c011.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_5d790b41ca1f",
+      "media": "it_5d790b41ca1f.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_a152c3068c0f",
+      "media": "it_a152c3068c0f.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_ca048e52a719",
+      "media": "it_ca048e52a719.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_951af8affaa8",
+      "media": "it_951af8affaa8.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_a12f7671f70d",
+      "media": "it_a12f7671f70d.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_46872b6772f5",
+      "media": "it_46872b6772f5.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_28b3f2730ee9",
+      "media": "it_28b3f2730ee9.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_221c810bfbc1",
+      "media": "it_221c810bfbc1.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_2c284b63e3d0",
+      "media": "it_2c284b63e3d0.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": true,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_83ecd54b4a13",
+      "media": "it_83ecd54b4a13.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_8fcf70102b6a",
+      "media": "it_8fcf70102b6a.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_29ecacf72dd4",
+      "media": "it_29ecacf72dd4.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_961757a44a05",
+      "media": "it_961757a44a05.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_d13f4e6da05d",
+      "media": "it_d13f4e6da05d.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_2d5e9e005a08",
+      "media": "it_2d5e9e005a08.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_716728dcaed2",
+      "media": "it_716728dcaed2.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_e5cbb4c6e40b",
+      "media": "it_e5cbb4c6e40b.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_0be5f43e7356",
+      "media": "it_0be5f43e7356.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_e1f5b68c9042",
+      "media": "it_e1f5b68c9042.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_d67804d9c579",
+      "media": "it_d67804d9c579.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_1295b8076626",
+      "media": "it_1295b8076626.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_818b9c0aae77",
+      "media": "it_818b9c0aae77.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_d550a7ad54fa",
+      "media": "it_d550a7ad54fa.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_2d9e0dbc04c8",
+      "media": "it_2d9e0dbc04c8.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_82eee0258edc",
+      "media": "it_82eee0258edc.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_23c0fcfaf58e",
+      "media": "it_23c0fcfaf58e.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_05f20c0adadf",
+      "media": "it_05f20c0adadf.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_fb9aa7554c30",
+      "media": "it_fb9aa7554c30.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_56a21bec0bda",
+      "media": "it_56a21bec0bda.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_e4cafd6cca04",
+      "media": "it_e4cafd6cca04.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_470407bb76ec",
+      "media": "it_470407bb76ec.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_65e2f6d11049",
+      "media": "it_65e2f6d11049.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_4a84cbeb270c",
+      "media": "it_4a84cbeb270c.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_fb2978758e61",
+      "media": "it_fb2978758e61.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_5ef7075cf83d",
+      "media": "it_5ef7075cf83d.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_1cd21ea18413",
+      "media": "it_1cd21ea18413.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_ca0a9f0129c7",
+      "media": "it_ca0a9f0129c7.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_0cbfe652d977",
+      "media": "it_0cbfe652d977.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_b892be064150",
+      "media": "it_b892be064150.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_e9ec5922c4cd",
+      "media": "it_e9ec5922c4cd.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_eee5fac7bf24",
+      "media": "it_eee5fac7bf24.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    },
+    {
+      "item_id": "it_d5b15ec5e204",
+      "media": "it_d5b15ec5e204.mp4",
+      "duration_s": 10.0,
+      "role": "audio",
+      "question": "",
+      "options": [],
+      "practice": false,
+      "practice_feedback": null
+    }
+  ]
+}
