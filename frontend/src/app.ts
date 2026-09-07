@@ -188,14 +188,22 @@ function saveStatusText(): string {
 }
 
 function renderSaveBar(): HTMLElement {
+  if (isV2() && !state.assignment) return h("div", { hidden: true });
+  const retry = actionButton(t("retry_sync"), "retry-sync");
+  const updateRetry = (): void => {
+    retry.hidden = !state.assignment || !study.collector?.enabled || !invitationToken ||
+      backend?.syncStatus?.().state !== "pending";
+  };
+  updateRetry();
   const bar = h("div", { className: "save-bar", id: "save-bar" },
     h("span", { id: "save-status", role: "status" }, saveStatusText()),
-    actionButton(t("retry_sync"), "retry-sync", !state.assignment || !study.collector?.enabled || !invitationToken),
+    retry,
     actionButton(t("download_partial"), "download-partial", !state.assignment));
   if (saveStatusTimer !== null) window.clearInterval(saveStatusTimer);
   saveStatusTimer = window.setInterval(() => {
     const status = root.querySelector<HTMLElement>("#save-status");
     if (status) status.textContent = saveStatusText();
+    updateRetry();
   }, 1000);
   return bar;
 }
@@ -329,7 +337,11 @@ async function startStudy(): Promise<void> {
   startInFlight = true;
   try {
     state.assignment = await backend.assign(pidHash(), uaHash());
-    state.itemIndex = 0;
+    // Keep the two practice items in the assignment for schema/back-end
+    // compatibility, but the v2 pilot starts directly at formal video 1.
+    state.itemIndex = isV2()
+      ? Math.max(0, state.assignment.items.findIndex((id) => !itemMap.get(id)?.practice))
+      : 0;
     state.playbackComplete = false;
     state.replayCount = 0;
     persistResume();
@@ -644,6 +656,10 @@ async function init(): Promise<void> {
       }
       state.assignment = restored;
       state.itemIndex = saved.itemIndex;
+      if (isV2() && state.itemIndex < state.assignment.items.length && currentItem()?.practice) {
+        const firstFormal = state.assignment.items.findIndex((id) => !itemMap.get(id)?.practice);
+        if (firstFormal >= 0) state.itemIndex = firstFormal;
+      }
       state.lang = saved.lang;
       strings = stringsFor(state.lang);
       state.screen = state.itemIndex >= state.assignment.items.length

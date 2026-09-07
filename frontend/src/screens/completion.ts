@@ -22,12 +22,17 @@ export function renderPayloadControls(
   link.download = "stealthrate-responses.json.gz";
   link.textContent = translate("download");
   link.className = "download-link";
+  const details = document.createElement("details");
+  details.className = "instruction-details";
+  const summary = document.createElement("summary");
+  summary.textContent = translate("copy");
   const textarea = document.createElement("textarea");
   textarea.id = "payload-code";
   textarea.readOnly = true;
   textarea.rows = 3;
   textarea.style.width = "100%";
   textarea.value = bundle;
+  details.append(summary, textarea, actionButton(translate("copy"), "copy"));
   box.dataset.url = url;
-  box.replaceChildren(link, textarea, actionButton(translate("copy"), "copy"));
+  box.replaceChildren(link, details);
 }

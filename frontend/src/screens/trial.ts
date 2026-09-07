@@ -11,8 +11,13 @@ export type TrialView = {
 
 export function renderTrial(context: ScreenContext, item: PublicItem): TrialView {
   const state = context.state;
-  const total = state.assignment?.items.length ?? 1;
-  const progress = Math.round(((state.itemIndex + 1) / Math.max(1, total)) * 100);
+  const assigned = state.assignment?.items ?? [];
+  const simple = context.study.presentation === "real_stealth" &&
+    context.study.tasks.some((task) => task.fields?.audio_clarity);
+  const formalItems = assigned.filter((id) => !context.itemMap.get(id)?.practice);
+  const formalIndex = simple ? Math.max(0, formalItems.indexOf(item.item_id)) : state.itemIndex;
+  const total = (simple ? formalItems.length : assigned.length) || 1;
+  const progress = Math.round(((formalIndex + 1) / Math.max(1, total)) * 100);
   const mediaUrl = `${context.study.media_base_url}${item.media}`;
   const video = h("video", { id: "clip", playsInline: true, "aria-label": "Study clip" });
   const form = renderTrialForm(item, context.study.tasks, context.t);
@@ -27,7 +32,9 @@ export function renderTrial(context: ScreenContext, item: PublicItem): TrialView
     {},
     h("div", { className: "progress", "aria-label": "Progress" },
       h("div", { style: { width: `${progress}%` } })),
-    h("p", {}, `Clip ${state.itemIndex + 1} / ${total}`),
+    h("p", {}, simple
+      ? (context.state.lang === "zh" ? `视频 ${formalIndex + 1} / ${total}` : `Video ${formalIndex + 1} / ${total}`)
+      : `Clip ${state.itemIndex + 1} / ${total}`),
     video,
     h("div", { className: "media-status notice", id: "media-status", role: "status" },
       state.playbackComplete ? context.t("playback_complete") : context.t("playback_required")),
