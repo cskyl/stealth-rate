@@ -4,6 +4,7 @@
  * alter the old study's assignment, resume, or response handling.
  */
 export const AUDIO_STUDY_ID = "human_audio_gain_20260910";
+export const ENVIRONMENT_STUDY_ID = "human_audio_environment_20260914";
 
 export type StudyRoute =
   | { kind: "legacy" }
@@ -40,8 +41,8 @@ function hasOldIdentifier(url: URL): boolean {
   return /(?:^|[#&])(?:invite|block)=/i.test(url.hash);
 }
 
-function isAssignmentId(value: string | null): value is string {
-  return value !== null && /^A(?:00[1-9]|0[1-3][0-9]|040)$/.test(value);
+function isAssignmentId(value: string | null, prefix: "A" | "B"): value is string {
+  return value !== null && new RegExp(`^${prefix}(?:00[1-9]|0[1-3][0-9]|040)$`).test(value);
 }
 
 /** Decide whether the root app should hand off to the frozen audio package. */
@@ -49,7 +50,7 @@ export function routeStudy(input: URL | string): StudyRoute {
   const url = typeof input === "string" ? new URL(input, "https://pages.invalid/") : input;
   const study = url.searchParams.get("study");
 
-  if (study !== null && study !== AUDIO_STUDY_ID) return { kind: "legacy" };
+  if (study !== null && study !== AUDIO_STUDY_ID && study !== ENVIRONMENT_STUDY_ID) return { kind: "legacy" };
   if (study === null && (hasOldIdentifier(url) || [...url.searchParams.keys()]
     .some((key) => !GENERIC_AUDIO_KEYS.has(key.toLowerCase())))) {
     // Unknown query parameters may be invitation/session fields from an old
@@ -58,8 +59,11 @@ export function routeStudy(input: URL | string): StudyRoute {
   }
 
   const assignment = url.searchParams.get("assignment") ?? url.searchParams.get("block");
-  const path = isAssignmentId(assignment)
-    ? `./audio-study/assignments/${assignment}.html`
-    : "./audio-study/";
+  const environment = study === null || study === ENVIRONMENT_STUDY_ID;
+  const prefix = environment ? "B" : "A";
+  const root = environment ? "./audio-study-environments/" : "./audio-study/";
+  const path = isAssignmentId(assignment, prefix)
+    ? `${root}assignments/${assignment}.html`
+    : root;
   return { kind: "audio", path };
 }

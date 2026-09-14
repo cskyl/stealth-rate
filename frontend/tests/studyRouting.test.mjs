@@ -10,10 +10,12 @@ async function routing() {
   const dir = await (await import("node:fs/promises")).mkdtemp(join(tmpdir(), "stealth-routing-"));
   const file = join(dir, "routing.mjs");
   const js = source.replace(/export type StudyRoute[\s\S]*?;\n\n/, "")
+    .replace("export const ENVIRONMENT_STUDY_ID", "const ENVIRONMENT_STUDY_ID")
     .replace("export const", "const")
     .replace("export function", "function")
     .replace(/: URL \| string/g, "")
     .replace(/: URL/g, "")
+    .replace(/: "A" \| "B"/g, "")
     .replace(/: boolean/g, "")
     .replace(/: string \| null/g, "")
     .replace(/: StudyRoute/g, "")
@@ -23,16 +25,16 @@ async function routing() {
   return import(pathToFileURL(file).href);
 }
 
-test("root defaults to audio study", async () => {
+test("root defaults to environment study", async () => {
   const { routeStudy } = await routing();
-  assert.deepEqual(routeStudy("https://pages.invalid/stealth-rate/"), { kind: "audio", path: "./audio-study/" });
+  assert.deepEqual(routeStudy("https://pages.invalid/stealth-rate/"), { kind: "audio", path: "./audio-study-environments/" });
 });
 
-test("explicit new study and strict assignment IDs route to audio pages", async () => {
+test("explicit studies route to their strict assignment pages", async () => {
   const { routeStudy } = await routing();
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_gain_20260910").path, "./audio-study/");
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_gain_20260910&assignment=A001").path, "./audio-study/assignments/A001.html");
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_gain_20260910&block=A40").path, "./audio-study/");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260914").path, "./audio-study-environments/");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260914&assignment=B001").path, "./audio-study-environments/assignments/B001.html");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260914&block=B40").path, "./audio-study-environments/");
   assert.equal(routeStudy("https://pages.invalid/?study=human_audio_gain_20260910&block=A040").path, "./audio-study/assignments/A040.html");
 });
 
@@ -42,6 +44,6 @@ test("old study and possible old invitation/session links stay legacy", async ()
   assert.deepEqual(routeStudy("https://pages.invalid/#invite=abc&block=block_1"), { kind: "legacy" });
   assert.deepEqual(routeStudy("https://pages.invalid/?PROLIFIC_PID=p1&STUDY_ID=s1&SESSION_ID=x"), { kind: "legacy" });
   assert.deepEqual(routeStudy("https://pages.invalid/?opaque_invitation=value"), { kind: "legacy" });
-  assert.deepEqual(routeStudy("https://pages.invalid/?guide=1"), { kind: "audio", path: "./audio-study/" });
-  assert.deepEqual(routeStudy("https://pages.invalid/?lang=zh"), { kind: "audio", path: "./audio-study/" });
+  assert.deepEqual(routeStudy("https://pages.invalid/?guide=1"), { kind: "audio", path: "./audio-study-environments/" });
+  assert.deepEqual(routeStudy("https://pages.invalid/?lang=zh"), { kind: "audio", path: "./audio-study-environments/" });
 });
