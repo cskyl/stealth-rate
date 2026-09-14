@@ -45,6 +45,7 @@ jobs:
           # Frozen, self-contained audio-only participant package.
           test -d audio-study || { echo "audio-study package missing"; exit 1; }
           cp -r audio-study site/audio-study
+          if [ -d audio-study-environments ]; then cp -r audio-study-environments site/audio-study-environments; fi
           # blinding guard: the public site must not carry the private key
           if find site -type f \( -name 'key.json' -o -path '*/private/*' \) | grep -q .; then echo "private file leaked into site"; exit 1; fi
       - uses: actions/upload-pages-artifact@v3
