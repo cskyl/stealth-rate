@@ -42,8 +42,11 @@ jobs:
             done
           done
           [ -d media ] && cp -r media/. site/media/ || true
+          # Frozen, self-contained audio-only participant package.
+          test -d audio-study || { echo "audio-study package missing"; exit 1; }
+          cp -r audio-study site/audio-study
           # blinding guard: the public site must not carry the private key
-          if find site -name 'key.json' | grep -q .; then echo "key.json leaked into site"; exit 1; fi
+          if find site -type f \( -name 'key.json' -o -path '*/private/*' \) | grep -q .; then echo "private file leaked into site"; exit 1; fi
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Short video study</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#5f6b80; --accent:#315bea; --soft:#eef2ff; --line:#dce2ee; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; background:linear-gradient(145deg,#f5f7ff 0%,#fff 58%); color:var(--ink); font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(680px,calc(100% - 32px)); margin:0 auto; padding:64px 0 48px; }
+    .eyebrow { color:var(--accent); font-size:.78rem; font-weight:750; letter-spacing:.12em; text-transform:uppercase; }
+    h1 { margin:10px 0 12px; font-size:clamp(2.1rem,6vw,3.5rem); letter-spacing:-.045em; line-height:1.05; }
+    .intro { max-width:560px; color:var(--muted); font-size:1.1rem; }
+    .card { margin-top:30px; padding:28px; border:1px solid var(--line); border-radius:22px; background:#fff; box-shadow:0 14px 40px #25386d12; }
+    .facts { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 24px; }
+    .fact { padding:8px 12px; border-radius:999px; background:var(--soft); color:#2947b2; font-weight:650; }
+    label { display:block; margin-bottom:8px; font-weight:700; }
+    .entry { display:flex; gap:10px; }
+    input { min-width:0; flex:1; padding:13px 14px; border:1px solid #b9c3d8; border-radius:11px; color:var(--ink); font:inherit; letter-spacing:.08em; text-transform:uppercase; }
+    input:focus { outline:3px solid #315bea33; border-color:var(--accent); }
+    button { padding:13px 19px; border:0; border-radius:11px; background:var(--accent); color:#fff; cursor:pointer; font:700 1rem inherit; }
+    button:hover { background:#2449d0; }
+    .error { min-height:1.55em; margin:9px 0 0; color:#b42318; font-size:.93rem; }
+    .note { margin:20px 0 0; color:var(--muted); font-size:.94rem; }
+    .help { margin-top:30px; padding-top:24px; border-top:1px solid var(--line); color:var(--muted); }
+    .help h2 { margin:0 0 6px; color:var(--ink); font-size:1rem; }
+    .help p { margin:4px 0; }
+    @media (max-width:480px) { main { padding-top:40px; } .card { padding:22px; } .entry { flex-direction:column; } button { width:100%; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Participant page</div>
+    <h1>Short video study</h1>
+    <p class="intro">Watch 30 short clips and give two quick ratings for each one. The study takes about 15–20 minutes.</p>
+
+    <section class="card" aria-labelledby="code-heading">
+      <div class="facts" aria-label="Study overview">
+        <span class="fact">30 clips</span>
+        <span class="fact">2 quick ratings</span>
+        <span class="fact">~15–20 min</span>
+      </div>
+      <form id="assignment-form" novalidate>
+        <label id="code-heading" for="assignment-code">Enter your assigned code</label>
+        <div class="entry">
+          <input id="assignment-code" name="assignment-code" type="text" inputmode="text" autocomplete="off" placeholder="A001" aria-describedby="code-help code-error" required>
+          <button type="submit">Begin study</button>
+        </div>
+        <p id="code-help" class="note">Use the code provided by the study coordinator (A001–A040). Codes are not assigned automatically; please complete only your assigned set.</p>
+        <p id="code-error" class="error" role="alert"></p>
+      </form>
+      <p class="note">Participation is voluntary. Keep the volume comfortable and stop if you need a break. Your responses are saved in this browser as you work; download the CSV and JSON at the end and send them privately to the study owner. Automatic upload to Google Sheets is not connected.</p>
+    </section>
+
+    <section class="help" aria-labelledby="help-heading">
+      <h2 id="help-heading">帮助 / Help</h2>
+      <p>请输入组织者提供的编号（A001–A040），例如 001 或 a001。系统不会自动分配编号；只完成分配给你的这一组。</p>
+      <p>参与完全自愿，请保持舒适音量。进度保存在本浏览器中；完成后下载 CSV 和 JSON，并私下发送给研究负责人。Google Sheets 不会自动上传。</p>
+    </section>
+  </main>
+  <script>
+    (function () {
+      const form = document.getElementById('assignment-form');
+      const input = document.getElementById('assignment-code');
+      const error = document.getElementById('code-error');
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const raw = input.value.trim().toUpperCase();
+        const digits = raw.replace(/^A/, '');
+        const valid = /^(?:[0-9]{3})$/.test(digits) && Number(digits) >= 1 && Number(digits) <= 40;
+        if (!valid) {
+          error.textContent = 'Please enter your assigned code, from A001 to A040.';
+          input.focus();
+          return;
+        }
+        error.textContent = '';
+        window.location.href = './assignments/A' + digits.padStart(3, '0') + '.html';
+      });
+    }());
+  </script>
+</body>
+</html>
