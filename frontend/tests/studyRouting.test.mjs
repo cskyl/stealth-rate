@@ -15,7 +15,7 @@ async function routing() {
     .replace("export function", "function")
     .replace(/: URL \| string/g, "")
     .replace(/: URL/g, "")
-    .replace(/: "A" \| "B" \| "C"/g, "")
+    .replace(/: "A" \| "B" \| "C" \| "D"/g, "")
     .replace(/: 40 \| 80/g, "")
     .replace(/: boolean/g, "")
     .replace(/: string \| null/g, "")
@@ -26,22 +26,32 @@ async function routing() {
   return import(pathToFileURL(file).href);
 }
 
-test("root defaults to the new C-study landing", async () => {
+test("root defaults to the new controls-study landing while published C links remain stable", async () => {
   const { routeStudy } = await routing();
   assert.deepEqual(routeStudy("https://pages.invalid/stealth-rate/"), { kind: "audio", path: "./audio-study-environments/" });
   assert.deepEqual(routeStudy("https://pages.invalid/?assignment=C001"), { kind: "audio", path: "./audio-study-environments/assignments/C001.html" });
   assert.deepEqual(routeStudy("https://pages.invalid/?assignment=C080"), { kind: "audio", path: "./audio-study-environments/assignments/C080.html" });
+  assert.deepEqual(routeStudy("https://pages.invalid/?assignment=D001"), { kind: "audio", path: "./audio-study-environments/assignments/D001.html" });
+  assert.deepEqual(routeStudy("https://pages.invalid/?assignment=D080"), { kind: "audio", path: "./audio-study-environments/assignments/D080.html" });
   assert.deepEqual(routeStudy("https://pages.invalid/?assignment=C081"), { kind: "legacy" });
   assert.deepEqual(routeStudy("https://pages.invalid/?assignment=B001"), { kind: "legacy" });
 });
 
-test("new C study uses strict C001--C080 assignments", async () => {
+test("explicit C study uses strict C001--C080 assignments and legacy C landing", async () => {
   const { routeStudy } = await routing();
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60").path, "./audio-study-environments/");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60").path, "./audio-study-environments/legacy-c.html");
   assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=C001").path, "./audio-study-environments/assignments/C001.html");
   assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=C080").path, "./audio-study-environments/assignments/C080.html");
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=C081").path, "./audio-study-environments/");
-  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=B001").path, "./audio-study-environments/");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=C081").path, "./audio-study-environments/legacy-c.html");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_n60&assignment=B001").path, "./audio-study-environments/legacy-c.html");
+});
+
+test("controls study uses strict D001--D080 assignments", async () => {
+  const { routeStudy } = await routing();
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_controls").path, "./audio-study-environments/");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_controls&assignment=D001").path, "./audio-study-environments/assignments/D001.html");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_controls&assignment=D080").path, "./audio-study-environments/assignments/D080.html");
+  assert.equal(routeStudy("https://pages.invalid/?study=human_audio_environment_20260918_controls&assignment=C001").path, "./audio-study-environments/");
 });
 
 test("explicit old studies retain their assignment pages and old B landing", async () => {

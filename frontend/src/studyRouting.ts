@@ -6,6 +6,7 @@
 export const AUDIO_STUDY_ID = "human_audio_gain_20260910";
 export const ENVIRONMENT_STUDY_ID = "human_audio_environment_20260914";
 export const ENVIRONMENT_N60_STUDY_ID = "human_audio_environment_20260918_n60";
+export const ENVIRONMENT_CONTROLS_STUDY_ID = "human_audio_environment_20260918_controls";
 
 export type StudyRoute =
   | { kind: "legacy" }
@@ -42,7 +43,7 @@ function hasOldIdentifier(url: URL): boolean {
   return /(?:^|[#&])(?:invite|block)=/i.test(url.hash);
 }
 
-function isAssignmentId(value: string | null, prefix: "A" | "B" | "C", max: 40 | 80): value is string {
+function isAssignmentId(value: string | null, prefix: "A" | "B" | "C" | "D", max: 40 | 80): value is string {
   if (value === null || value !== value.toUpperCase()) return false;
   const number = Number(value.slice(1));
   return value.startsWith(prefix) && Number.isInteger(number) && number >= 1 && number <= max
@@ -54,14 +55,14 @@ export function routeStudy(input: URL | string): StudyRoute {
   const url = typeof input === "string" ? new URL(input, "https://pages.invalid/") : input;
   const study = url.searchParams.get("study");
 
-  if (study !== null && study !== AUDIO_STUDY_ID && study !== ENVIRONMENT_STUDY_ID && study !== ENVIRONMENT_N60_STUDY_ID) return { kind: "legacy" };
+  if (study !== null && study !== AUDIO_STUDY_ID && study !== ENVIRONMENT_STUDY_ID && study !== ENVIRONMENT_N60_STUDY_ID && study !== ENVIRONMENT_CONTROLS_STUDY_ID) return { kind: "legacy" };
   if (study === null) {
     const assignment = url.searchParams.get("assignment") ?? url.searchParams.get("block");
     const unknownQuery = [...url.searchParams.keys()].some((key) => {
       const normalized = key.toLowerCase();
       return !GENERIC_AUDIO_KEYS.has(normalized) && normalized !== "assignment" && normalized !== "block";
     });
-    if (hasOldIdentifier(url) || unknownQuery || (assignment !== null && !isAssignmentId(assignment, "C", 80))) {
+    if (hasOldIdentifier(url) || unknownQuery || (assignment !== null && !isAssignmentId(assignment, "C", 80) && !isAssignmentId(assignment, "D", 80))) {
       // Unknown query parameters may be invitation/session fields from an old
       // deployment. Keeping the old app is safer than silently losing answers.
       return { kind: "legacy" };
@@ -86,13 +87,32 @@ export function routeStudy(input: URL | string): StudyRoute {
     };
   }
 
-  // The unqualified public root and the explicit n=60 study both use the new
-  // C001--C080 package.  Invalid or absent C assignments intentionally land
-  // on its landing page, while the old B study above has its own legacy page.
+  if (study === ENVIRONMENT_N60_STUDY_ID) {
+    return {
+      kind: "audio",
+      path: isAssignmentId(assignment, "C", 80)
+        ? `./audio-study-environments/assignments/${assignment}.html`
+        : "./audio-study-environments/legacy-c.html",
+    };
+  }
+
+  if (study === ENVIRONMENT_CONTROLS_STUDY_ID) {
+    return {
+      kind: "audio",
+      path: isAssignmentId(assignment, "D", 80)
+        ? `./audio-study-environments/assignments/${assignment}.html`
+        : "./audio-study-environments/",
+    };
+  }
+
+  // Published unqualified C links remain on the C package. The new default is
+  // the controls package, while the explicit n=60 C study is handled above.
   return {
     kind: "audio",
     path: isAssignmentId(assignment, "C", 80)
       ? `./audio-study-environments/assignments/${assignment}.html`
-      : "./audio-study-environments/",
+      : isAssignmentId(assignment, "D", 80)
+        ? `./audio-study-environments/assignments/${assignment}.html`
+        : "./audio-study-environments/",
   };
 }

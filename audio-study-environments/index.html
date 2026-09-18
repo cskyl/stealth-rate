@@ -44,10 +44,10 @@
       <form id="assignment-form" novalidate>
         <label id="code-heading" for="assignment-code">Enter your assigned code</label>
         <div class="entry">
-          <input id="assignment-code" name="assignment-code" type="text" inputmode="text" autocomplete="off" placeholder="C001" aria-describedby="code-help code-error" required>
+          <input id="assignment-code" name="assignment-code" type="text" inputmode="text" autocomplete="off" placeholder="D001" aria-describedby="code-help code-error" required>
           <button type="submit">Begin study</button>
         </div>
-        <p id="code-help" class="note">Use the code provided by the study coordinator (C001–C080). Codes are not assigned automatically; please complete only your assigned set.</p>
+        <p id="code-help" class="note">Use the code provided by the study coordinator (D001–D080). Codes are not assigned automatically; please complete only your assigned set.</p>
         <p id="code-error" class="error" role="alert"></p>
       </form>
       <p class="note">Participation is voluntary. Keep the volume comfortable and stop if you need a break. Your responses are saved in this browser as you work; download the CSV and JSON at the end and send them privately to the study owner. Automatic upload to Google Sheets is not connected.</p>
@@ -55,7 +55,7 @@
 
     <section class="help" aria-labelledby="help-heading">
       <h2 id="help-heading">帮助 / Help</h2>
-      <p>请输入组织者提供的编号（C001–C080），例如 001 或 c001。系统不会自动分配编号；只完成分配给你的这一组。</p>
+      <p>请输入组织者提供的编号（D001–D080），例如 001 或 d001。系统不会自动分配编号；只完成分配给你的这一组。</p>
       <p>参与完全自愿，请保持舒适音量。进度保存在本浏览器中；完成后下载 CSV 和 JSON，并私下发送给研究负责人。Google Sheets 不会自动上传。</p>
     </section>
   </main>
@@ -67,15 +67,15 @@
       form.addEventListener('submit', function (event) {
         event.preventDefault();
         const raw = input.value.trim().toUpperCase();
-        const digits = raw.replace(/^C/, '');
+        const digits = raw.replace(/^[CD]/, '');
         const valid = /^(?:[0-9]{3})$/.test(digits) && Number(digits) >= 1 && Number(digits) <= 80;
         if (!valid) {
-          error.textContent = 'Please enter your assigned code, from C001 to C080.';
+          error.textContent = 'Please enter your assigned code, from D001 to D080.';
           input.focus();
           return;
         }
         error.textContent = '';
-        window.location.href = './assignments/C' + digits.padStart(3, '0') + '.html';
+        window.location.href = (/^C/.test(raw) ? './assignments/C' : './assignments/D') + digits.padStart(3, '0') + '.html';
       });
     }());
   </script>

@@ -1,6 +1,6 @@
 # Short video study
 
-1. Open https://cskyl.github.io/stealth-rate/ and enter the code your coordinator gives you (C001–C080). If you received an offline folder instead, unzip it and open your assigned page, such as `assignments/C001.html`.
+1. Open https://cskyl.github.io/stealth-rate/ and enter the code your coordinator gives you (D001–D080 for the current version). If you received an offline folder instead, unzip it and open your assigned page, such as `assignments/D001.html`. Previously assigned C codes remain usable; do not switch sets if you already started.
 2. Start playback and listen to each clip. Some clips contain an added voice; others do not. You may answer after the initial play; you do not need to watch each clip to the end.
 3. Answer two questions independently: (1) whether you noticed a voice that seemed added (No / Not sure / Yes), and, only if Yes, how noticeable it was (Barely / Slightly / Clearly / Very obvious); (2) how much of that speech you could understand (Did not notice speech / Heard a voice, no words / Some words / Most words / All words). Answer each question based on what you heard.
 4. Keep playback volume comfortable and steady. Lower it or stop if a clip feels too loud. Use “Playback problem” if the video or sound does not work—do not guess.
@@ -10,7 +10,7 @@ About 15–20 minutes for 30 clips (planning estimate). You may pause and return
 
 ## 中文说明
 
-1. 打开 https://cskyl.github.io/stealth-rate/，输入组织者分配的编号（C001–C080）。如果收到的是离线文件夹，请完整解压并打开分配给你的页面，例如 `assignments/C001.html`。
+1. 打开 https://cskyl.github.io/stealth-rate/，输入组织者分配的编号（当前新版 D001–D080）。如果收到的是离线文件夹，请完整解压并打开分配给你的页面，例如 `assignments/D001.html`。已分配的 C 编号仍可使用，已经开始者不要更换组别。
 2. 开始播放并听每个片段。有些片段加了说话声，有些没有。第一次播放后即可回答，不要求看到片段结束。
 3. 独立回答两个问题：(1) 是否注意到似乎后来加入的说话声（No / Not sure / Yes）；只有选 Yes 时，再选择明显程度（Barely / Slightly / Clearly / Very obvious）；(2) 能听懂多少说话内容（Did not notice speech / Heard a voice, no words / Some words / Most words / All words）。每一题都按你实际听到的内容回答。
 4. 音量保持舒适、尽量不变。太响可以调低或停止；无法播放请选 Playback problem，不要猜。

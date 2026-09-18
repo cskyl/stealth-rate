@@ -42,9 +42,11 @@ jobs:
             done
           done
           [ -d media ] && cp -r media/. site/media/ || true
-          # Frozen, self-contained audio-only participant package.
+          # Frozen A participant package.  Its immutable media remain in the
+          # pinned historical repository commit; only participant HTML and
+          # instructions are staged into Pages to avoid a duplicate 269 MB copy.
           test -d audio-study || { echo "audio-study package missing"; exit 1; }
-          cp -r audio-study site/audio-study
+          python3 tools/stage_legacy_audio.py --source audio-study --output site/audio-study
           if [ -d audio-study-environments ]; then cp -r audio-study-environments site/audio-study-environments; fi
           # blinding guard: the public site must not carry the private key
           if find site -type f \( -name 'key.json' -o -path '*/private/*' \) | grep -q .; then echo "private file leaked into site"; exit 1; fi
