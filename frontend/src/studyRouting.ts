@@ -5,6 +5,7 @@
  */
 export const AUDIO_STUDY_ID = "human_audio_gain_20260910";
 export const ENVIRONMENT_STUDY_ID = "human_audio_environment_20260914";
+export const ENVIRONMENT_N60_STUDY_ID = "human_audio_environment_20260918_n60";
 
 export type StudyRoute =
   | { kind: "legacy" }
@@ -41,8 +42,11 @@ function hasOldIdentifier(url: URL): boolean {
   return /(?:^|[#&])(?:invite|block)=/i.test(url.hash);
 }
 
-function isAssignmentId(value: string | null, prefix: "A" | "B"): value is string {
-  return value !== null && new RegExp(`^${prefix}(?:00[1-9]|0[1-3][0-9]|040)$`).test(value);
+function isAssignmentId(value: string | null, prefix: "A" | "B" | "C", max: 40 | 80): value is string {
+  if (value === null || value !== value.toUpperCase()) return false;
+  const number = Number(value.slice(1));
+  return value.startsWith(prefix) && Number.isInteger(number) && number >= 1 && number <= max
+    && value === `${prefix}${String(number).padStart(3, "0")}`;
 }
 
 /** Decide whether the root app should hand off to the frozen audio package. */
@@ -50,20 +54,45 @@ export function routeStudy(input: URL | string): StudyRoute {
   const url = typeof input === "string" ? new URL(input, "https://pages.invalid/") : input;
   const study = url.searchParams.get("study");
 
-  if (study !== null && study !== AUDIO_STUDY_ID && study !== ENVIRONMENT_STUDY_ID) return { kind: "legacy" };
-  if (study === null && (hasOldIdentifier(url) || [...url.searchParams.keys()]
-    .some((key) => !GENERIC_AUDIO_KEYS.has(key.toLowerCase())))) {
-    // Unknown query parameters may be invitation/session fields from an old
-    // deployment. Keeping the old app is safer than silently losing answers.
-    return { kind: "legacy" };
+  if (study !== null && study !== AUDIO_STUDY_ID && study !== ENVIRONMENT_STUDY_ID && study !== ENVIRONMENT_N60_STUDY_ID) return { kind: "legacy" };
+  if (study === null) {
+    const assignment = url.searchParams.get("assignment") ?? url.searchParams.get("block");
+    const unknownQuery = [...url.searchParams.keys()].some((key) => {
+      const normalized = key.toLowerCase();
+      return !GENERIC_AUDIO_KEYS.has(normalized) && normalized !== "assignment" && normalized !== "block";
+    });
+    if (hasOldIdentifier(url) || unknownQuery || (assignment !== null && !isAssignmentId(assignment, "C", 80))) {
+      // Unknown query parameters may be invitation/session fields from an old
+      // deployment. Keeping the old app is safer than silently losing answers.
+      return { kind: "legacy" };
+    }
   }
 
   const assignment = url.searchParams.get("assignment") ?? url.searchParams.get("block");
-  const environment = study === null || study === ENVIRONMENT_STUDY_ID;
-  const prefix = environment ? "B" : "A";
-  const root = environment ? "./audio-study-environments/" : "./audio-study/";
-  const path = isAssignmentId(assignment, prefix)
-    ? `${root}assignments/${assignment}.html`
-    : root;
-  return { kind: "audio", path };
+  if (study === ENVIRONMENT_STUDY_ID) {
+    return {
+      kind: "audio",
+      path: isAssignmentId(assignment, "B", 40)
+        ? `./audio-study-environments/assignments/${assignment}.html`
+        : "./audio-study-environments/legacy-b.html",
+    };
+  }
+  if (study === AUDIO_STUDY_ID) {
+    return {
+      kind: "audio",
+      path: isAssignmentId(assignment, "A", 40)
+        ? `./audio-study/assignments/${assignment}.html`
+        : "./audio-study/",
+    };
+  }
+
+  // The unqualified public root and the explicit n=60 study both use the new
+  // C001--C080 package.  Invalid or absent C assignments intentionally land
+  // on its landing page, while the old B study above has its own legacy page.
+  return {
+    kind: "audio",
+    path: isAssignmentId(assignment, "C", 80)
+      ? `./audio-study-environments/assignments/${assignment}.html`
+      : "./audio-study-environments/",
+  };
 }
