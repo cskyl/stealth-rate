@@ -28,6 +28,8 @@
     .help p { margin:4px 0; }
     @media (max-width:480px) { main { padding-top:40px; } .card { padding:22px; } .entry { flex-direction:column; } button { width:100%; } }
   </style>
+<link rel="stylesheet" href="./ui-language.css">
+<script src="./ui-language.js" defer></script>
 </head>
 <body>
   <main>
@@ -75,7 +77,7 @@
           return;
         }
         error.textContent = '';
-        window.location.href = './assignments/C' + digits.padStart(3, '0') + '.html';
+        window.location.href = './assignments/C' + digits.padStart(3, '0') + '.html' + '?lang=' + document.documentElement.lang;
       });
     }());
   </script>
